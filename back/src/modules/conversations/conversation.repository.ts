@@ -133,6 +133,14 @@ export class ConversationRepository {
     );
   }
 
+  getMemberIds(conversationId: string): string[] {
+    return (
+      this.database
+        .prepare("SELECT user_id FROM conversation_members WHERE conversation_id = ?")
+        .all(conversationId) as Array<{ user_id: string }>
+    ).map((row) => row.user_id);
+  }
+
   createMessage(conversationId: string, senderId: string, content: string) {
     if (!this.isMember(conversationId, senderId)) {
       throw new HttpError(404, "CONVERSATION_NOT_FOUND", "Conversation not found");

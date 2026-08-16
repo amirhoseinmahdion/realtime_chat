@@ -32,6 +32,7 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
   const [typingUserId, setTypingUserId] = useState<string | null>(null);
   const [isParticipantOnline, setIsParticipantOnline] = useState(false);
   const [readMessageId, setReadMessageId] = useState<string | null>(null);
+  const [unreadCounts, setUnreadCounts] = useState<Record<string, number>>({});
 
   const selectedConversation = useMemo(
     () => conversations.find((conversation) => conversation.id === selectedId) ?? null,
@@ -91,12 +92,35 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
       }
     });
     socket.on("message:created", ({ message, clientId }: { message: Message; clientId: string | null }) => {
-      if (message.conversationId !== selectedIdRef.current) return;
-      setMessages((current) =>
-        clientId
-          ? replaceOptimisticMessage(current, clientId, { ...message, delivery: "sent" })
-          : mergeMessages(current, [{ ...message, delivery: "sent" }]),
+      setConversations((current) =>
+        mergeConversations(
+          current,
+          current
+            .filter((conversation) => conversation.id === message.conversationId)
+            .map((conversation) => ({
+              ...conversation,
+              updatedAt: message.createdAt,
+              lastMessage: {
+                id: message.id,
+                content: message.content ?? "Message deleted",
+                senderId: message.sender.id,
+                createdAt: message.createdAt,
+              },
+            })),
+        ),
       );
+      if (message.conversationId === selectedIdRef.current) {
+        setMessages((current) =>
+          clientId
+            ? replaceOptimisticMessage(current, clientId, { ...message, delivery: "sent" })
+            : mergeMessages(current, [{ ...message, delivery: "sent" }]),
+        );
+      } else if (message.sender.id !== currentUser.id) {
+        setUnreadCounts((current) => ({
+          ...current,
+          [message.conversationId]: (current[message.conversationId] ?? 0) + 1,
+        }));
+      }
     });
     socket.on("typing:changed", (event: { conversationId: string; userId: string; typing: boolean }) => {
       if (event.conversationId === selectedIdRef.current) {
@@ -119,7 +143,7 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [getAccessToken, loadMessages]);
+  }, [currentUser.id, getAccessToken, loadMessages]);
 
   useEffect(() => {
     const latestIncoming = messages.findLast((message) => message.sender.id !== currentUser.id);
@@ -147,6 +171,7 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
   }, [authorizedRequest, query]);
 
   async function selectConversation(conversationId: string) {
+    setUnreadCounts((current) => ({ ...current, [conversationId]: 0 }));
     setSelectedId(conversationId);
     setMessages([]);
     setNextCursor(null);
@@ -255,7 +280,7 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
             {query.trim() ? (
               <SearchResults isLoading={isSearching} onSelect={startConversation} pendingUserId={isStartingChat} users={searchResults} />
             ) : (
-              <ConversationList conversations={conversations} isLoading={isLoadingConversations} onSelect={selectConversation} selectedId={selectedId} />
+              <ConversationList conversations={conversations} isLoading={isLoadingConversations} onSelect={selectConversation} selectedId={selectedId} unreadCounts={unreadCounts} />
             )}
           </div>
         </aside>
@@ -285,10 +310,10 @@ function SearchBox({ isSearching, onChange, query }: Readonly<{ isSearching: boo
   return <div className="relative"><span className="pointer-events-none absolute inset-y-0 left-3.5 flex items-center text-slate-600"><SearchIcon /></span><input aria-label="Search people" className="h-11 w-full rounded-xl border border-white/8 bg-white/[0.035] pl-10 pr-10 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-teal-300/40 focus:ring-4 focus:ring-teal-300/5" onChange={(event) => onChange(event.target.value)} placeholder="Search people" type="search" value={query} />{isSearching ? <span className="absolute right-3.5 top-3.5 size-4 animate-spin rounded-full border-2 border-slate-600 border-t-teal-300" /> : null}</div>;
 }
 
-function ConversationList({ conversations, isLoading, onSelect, selectedId }: Readonly<{ conversations: Conversation[]; isLoading: boolean; onSelect: (id: string) => void; selectedId: string | null }>) {
+function ConversationList({ conversations, isLoading, onSelect, selectedId, unreadCounts }: Readonly<{ conversations: Conversation[]; isLoading: boolean; onSelect: (id: string) => void; selectedId: string | null; unreadCounts: Record<string, number> }>) {
   if (isLoading) return <ListSkeleton />;
   if (!conversations.length) return <SidebarEmpty title="No conversations yet" description="Search for someone above to start your first chat." />;
-  return <div className="p-2" role="list"><p className="px-3 pb-2 pt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-600">Messages</p>{conversations.map((conversation) => { const participant = conversation.participant; const label = participant?.displayName ?? conversation.title ?? "Conversation"; return <button className={`flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition ${selectedId === conversation.id ? "bg-teal-300/9" : "hover:bg-white/[0.035]"}`} key={conversation.id} onClick={() => onSelect(conversation.id)} role="listitem" type="button"><Avatar name={label} /><span className="min-w-0 flex-1"><span className="flex items-center justify-between gap-2"><span className="truncate text-sm font-semibold text-slate-100">{label}</span><span className="shrink-0 text-[11px] text-slate-600">{formatShortTime(conversation.lastMessage?.createdAt ?? conversation.updatedAt)}</span></span><span className="mt-1 block truncate text-xs text-slate-500">{conversation.lastMessage?.content ?? `@${participant?.username ?? "new_chat"}`}</span></span></button>; })}</div>;
+  return <div className="p-2" role="list"><p className="px-3 pb-2 pt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-600">Messages</p>{conversations.map((conversation) => { const participant = conversation.participant; const label = participant?.displayName ?? conversation.title ?? "Conversation"; const unread = unreadCounts[conversation.id] ?? 0; return <button aria-label={`${label}${unread ? `, ${unread} unread messages` : ""}`} className={`flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition ${selectedId === conversation.id ? "bg-teal-300/9" : unread ? "bg-white/[0.025] hover:bg-white/[0.05]" : "hover:bg-white/[0.035]"}`} key={conversation.id} onClick={() => onSelect(conversation.id)} role="listitem" type="button"><span className="relative"><Avatar name={label} />{unread ? <span className="absolute -right-0.5 -top-0.5 size-3 rounded-full border-2 border-[#0b1220] bg-teal-300" /> : null}</span><span className="min-w-0 flex-1"><span className="flex items-center justify-between gap-2"><span className={`truncate text-sm ${unread ? "font-bold text-white" : "font-semibold text-slate-100"}`}>{label}</span><span className="shrink-0 text-[11px] text-slate-600">{formatShortTime(conversation.lastMessage?.createdAt ?? conversation.updatedAt)}</span></span><span className="mt-1 flex items-center gap-2"><span className={`min-w-0 flex-1 truncate text-xs ${unread ? "font-medium text-slate-300" : "text-slate-500"}`}>{conversation.lastMessage?.content ?? `@${participant?.username ?? "new_chat"}`}</span>{unread ? <span className="grid min-w-5 place-items-center rounded-full bg-teal-300 px-1.5 py-0.5 text-[10px] font-bold text-slate-950">{unread > 99 ? "99+" : unread}</span> : null}</span></span></button>; })}</div>;
 }
 
 function SearchResults({ isLoading, onSelect, pendingUserId, users }: Readonly<{ isLoading: boolean; onSelect: (user: SearchUser) => void; pendingUserId: string | null; users: SearchUser[] }>) {

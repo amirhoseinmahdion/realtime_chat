@@ -69,7 +69,13 @@ export function createSocketServer(
           user.id,
           input.content,
         );
-        io.to(`conversation:${input.conversationId}`).emit("message:created", {
+        const notificationRooms = [
+          `conversation:${input.conversationId}`,
+          ...options.conversations
+            .getMemberIds(input.conversationId)
+            .map((memberId) => `user:${memberId}`),
+        ];
+        io.to(notificationRooms).emit("message:created", {
           message,
           clientId: typeof input.clientId === "string" ? input.clientId : null,
         });
