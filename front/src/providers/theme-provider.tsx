@@ -2,40 +2,31 @@
 
 import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from "react";
 
-export type ThemePreference = "light" | "dark" | "system";
+export type ThemePreference = "light" | "dark";
 
 interface ThemeContextValue {
   preference: ThemePreference;
   setPreference: (preference: ThemePreference) => void;
 }
 
-const storageKey = "echoline:theme:v1";
+const storageKey = "online-chat:theme:v1";
+const legacyStorageKey = "echoline:theme:v1";
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-function resolveTheme(preference: ThemePreference): "light" | "dark" {
-  if (preference !== "system") return preference;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-}
-
 function applyTheme(preference: ThemePreference): void {
-  document.documentElement.dataset.theme = resolveTheme(preference);
+  document.documentElement.dataset.theme = preference;
 }
 
 export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
-  const [preference, setPreferenceState] = useState<ThemePreference>("system");
+  const [preference, setPreferenceState] = useState<ThemePreference>("dark");
 
   useEffect(() => {
-    const stored = localStorage.getItem(storageKey);
-    const initial = stored === "light" || stored === "dark" || stored === "system" ? stored : "system";
+    const stored = localStorage.getItem(storageKey) ?? localStorage.getItem(legacyStorageKey);
+    const initial: ThemePreference = stored === "light" ? "light" : "dark";
+    localStorage.setItem(storageKey, initial);
+    localStorage.removeItem(legacyStorageKey);
     queueMicrotask(() => setPreferenceState(initial));
     applyTheme(initial);
-
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const updateSystemTheme = () => {
-      if ((localStorage.getItem(storageKey) ?? "system") === "system") applyTheme("system");
-    };
-    media.addEventListener("change", updateSystemTheme);
-    return () => media.removeEventListener("change", updateSystemTheme);
   }, []);
 
   function setPreference(nextPreference: ThemePreference) {

@@ -7,7 +7,7 @@ import { AuthProvider } from "@/providers/auth-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 
 export const metadata: Metadata = {
-  title: "EchoLine",
+  title: "Online Chat",
   description: "A real-time chat application",
 };
 
@@ -17,7 +17,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var p=localStorage.getItem("echoline:theme:v1")||"system";var d=p==="dark"||(p==="system"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light"}catch(e){document.documentElement.dataset.theme="dark"}})();`,
+            __html: `(function(){try{var p=localStorage.getItem("online-chat:theme:v1")||localStorage.getItem("echoline:theme:v1");document.documentElement.dataset.theme=p==="light"?"light":"dark"}catch(e){document.documentElement.dataset.theme="dark"}})();`,
           }}
         />
       </head>

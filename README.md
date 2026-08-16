@@ -1,4 +1,4 @@
-# EchoLine
+# Online Chat
 
 A real-time chat application with a Next.js client and an Express/Socket.IO server.
 

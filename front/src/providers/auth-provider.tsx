@@ -13,7 +13,8 @@ import {
 import { ApiError, apiRequest } from "@/lib/api";
 import type { AuthResponse, User } from "@/types/auth";
 
-const tokenKey = "echoline:auth-token:v1";
+const tokenKey = "online-chat:auth-token:v1";
+const legacyTokenKey = "echoline:auth-token:v1";
 
 interface AuthContextValue {
   user: User | null;
@@ -46,7 +47,11 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem(tokenKey);
+    const token = localStorage.getItem(tokenKey) ?? localStorage.getItem(legacyTokenKey);
+    if (token) {
+      localStorage.setItem(tokenKey, token);
+      localStorage.removeItem(legacyTokenKey);
+    }
     if (!token) {
       queueMicrotask(() => setIsLoading(false));
       return;

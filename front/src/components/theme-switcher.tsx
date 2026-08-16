@@ -5,7 +5,6 @@ import { type ThemePreference, useTheme } from "@/providers/theme-provider";
 const themes: Array<{ value: ThemePreference; label: string; icon: string }> = [
   { value: "light", label: "Light", icon: "☀" },
   { value: "dark", label: "Dark", icon: "☾" },
-  { value: "system", label: "System", icon: "◐" },
 ];
 
 export function ThemeSwitcher() {

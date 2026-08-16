@@ -1,7 +1,7 @@
 export const openApiDocument = {
   openapi: "3.1.0",
   info: {
-    title: "EchoLine API",
+    title: "Online Chat API",
     version: "1.0.0",
     description: "HTTP API for authentication, users, conversations, and chat history.",
   },

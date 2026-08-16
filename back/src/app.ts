@@ -44,7 +44,7 @@ export function createApp(options: AppOptions) {
   app.use(
     "/api/docs",
     swaggerUi.serve,
-    swaggerUi.setup(openApiDocument, { customSiteTitle: "EchoLine API" }),
+    swaggerUi.setup(openApiDocument, { customSiteTitle: "Online Chat API" }),
   );
 
   app.get("/api/health", (_request, response) => {

@@ -81,15 +81,15 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
     <div>
       <div className="mb-8">
         <p className="mb-2 text-sm font-medium text-teal-300">
-          {isSignup ? "Create your space" : "Welcome back"}
+          {isSignup ? "Start chatting today" : "Good to see you again"}
         </p>
         <h2 className="text-3xl font-semibold tracking-[-0.035em] text-white sm:text-4xl">
-          {isSignup ? "Join the conversation" : "Sign in to EchoLine"}
+          {isSignup ? "Create your Online Chat account" : "Continue to Online Chat"}
         </h2>
         <p className="mt-3 text-sm leading-6 text-slate-400">
           {isSignup
-            ? "Choose a username and you’ll be ready to start chatting."
-            : "Enter your username and password to continue where you left off."}
+            ? "Create your profile, find people, and start a conversation in seconds."
+            : "Sign in to see your conversations and reconnect with your people."}
         </p>
       </div>
 
@@ -175,7 +175,7 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
       </form>
 
       <p className="mt-7 text-center text-sm text-slate-500">
-        {isSignup ? "Already have an account?" : "New to EchoLine?"}{" "}
+        {isSignup ? "Already have an account?" : "New to Online Chat?"}{" "}
         <Link className="font-semibold text-teal-300 transition hover:text-teal-200 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300" href={isSignup ? "/login" : "/signup"}>
           {isSignup ? "Sign in" : "Create an account"}
         </Link>
