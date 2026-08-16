@@ -57,7 +57,7 @@ Provide the server APIs needed by the chat interface.
 
 ## Feature 5: Chat and Conversation UI
 
-**Status:** Active
+**Status:** Complete
 
 Create the authenticated chat page and connect it to server APIs.
 
@@ -70,7 +70,7 @@ Create the authenticated chat page and connect it to server APIs.
 
 ## Feature 6: Real-Time Messaging
 
-**Status:** Planned
+**Status:** Active
 
 Deliver live chat through Socket.IO.
 

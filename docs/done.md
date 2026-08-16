@@ -35,6 +35,27 @@ This file records project phases that have been implemented and verified. Planne
 
 ## Completed Features
 
+## 2026-08-16 — Feature 5: Chat and Conversation UI
+
+**Status:** Complete
+
+### Delivered
+
+- Added a responsive chat shell with desktop sidebar and mobile list/detail navigation.
+- Connected debounced user search, direct-chat creation, conversation listing, and cursor-paginated history to the authenticated API.
+- Added session-expiry handling, ID-based deduplication, loading/empty/error states, participant details, previews, timestamps, logout, and a disabled Feature 6 composer.
+- Added Vitest coverage for conversation and message merging/order behavior.
+
+### Verified
+
+- Frontend ESLint, strict TypeScript, two Vitest tests, and production dependency audit passed.
+- Login and chat routes returned HTTP 200; backend health returned a successful response.
+
+### Notes
+
+- Visual browser automation remains unavailable because `agent-browser` is not installed. The known Next.js production-build environment limitation remains documented under Feature 1.
+- Sending stays intentionally disabled until Feature 6 adds authenticated Socket.IO persistence.
+
 ## 2026-08-16 — Feature 4: User and Conversation APIs
 
 **Status:** Complete

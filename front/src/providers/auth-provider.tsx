@@ -10,7 +10,7 @@ import {
   useState,
 } from "react";
 
-import { apiRequest } from "@/lib/api";
+import { ApiError, apiRequest } from "@/lib/api";
 import type { AuthResponse, User } from "@/types/auth";
 
 const tokenKey = "echoline:auth-token:v1";
@@ -21,6 +21,7 @@ interface AuthContextValue {
   login: (username: string, password: string) => Promise<void>;
   signup: (input: { username: string; password: string; displayName: string }) => Promise<void>;
   logout: () => Promise<void>;
+  authorizedRequest: <T>(path: string, options?: RequestInit) => Promise<T>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -79,9 +80,27 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
     }
   }, []);
 
+  const authorizedRequest = useCallback(async <T,>(path: string, options: RequestInit = {}) => {
+    const token = localStorage.getItem(tokenKey);
+    if (!token) {
+      setUser(null);
+      throw new ApiError("Your session has expired. Please sign in again.", 401, "UNAUTHORIZED");
+    }
+
+    try {
+      return await apiRequest<T>(path, options, token);
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) {
+        localStorage.removeItem(tokenKey);
+        setUser(null);
+      }
+      throw error;
+    }
+  }, []);
+
   const value = useMemo(
-    () => ({ user, isLoading, login, signup, logout }),
-    [user, isLoading, login, signup, logout],
+    () => ({ user, isLoading, login, signup, logout, authorizedRequest }),
+    [user, isLoading, login, signup, logout, authorizedRequest],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

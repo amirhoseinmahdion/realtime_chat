@@ -1,48 +1,49 @@
-# Current Task: Feature 5 — Chat and Conversation UI
+# Current Task: Feature 6 — Real-Time Messaging
 
 **Status:** Active
 
 ## Goal
 
-Replace the chat placeholder with a responsive product interface connected to the Feature 4 APIs. Users must be able to search for people, start or reopen direct chats, browse conversations, and load paginated history.
+Enable authenticated, persisted real-time messaging through Socket.IO. Users must receive new messages without refreshing, recover missed history after reconnecting, and see reliable optimistic delivery state.
 
-## Client Data Layer
+## Server Socket Layer
 
-- [ ] Add typed user-search, conversation, and message models.
-- [ ] Expose the active Bearer token safely through the auth client API.
-- [ ] Add API functions for search, create/reuse conversation, list conversations, and history.
-- [ ] Deduplicate conversations and messages by ID.
-- [ ] Handle unauthorized responses by clearing the session and returning to login.
+- [ ] Authenticate Socket.IO handshakes using the existing JWT and token-version checks.
+- [ ] Join each connection to `user:{userId}` and authorized `conversation:{conversationId}` rooms.
+- [ ] Add validated `conversation:join` and `message:send` events with acknowledgement payloads.
+- [ ] Verify membership before joining rooms or creating messages.
+- [ ] Persist each message transactionally before broadcasting `message:created`.
+- [ ] Update conversation activity when a message is created.
+- [ ] Add safe socket error codes without leaking conversation membership.
 
-## Responsive Chat Layout
+## Client Messaging
 
-- [ ] Build the desktop conversation sidebar, active conversation header, history area, and composer.
-- [ ] Add mobile navigation between conversation list and active conversation.
-- [ ] Add accessible empty, loading, skeleton, and error states.
-- [ ] Display conversation participants, latest-message previews, timestamps, and selected state.
-- [ ] Keep the existing profile/logout access visible.
+- [ ] Add one authenticated Socket.IO client lifecycle tied to the active session.
+- [ ] Join the selected conversation and clean up listeners when selection changes.
+- [ ] Enable the composer with validation, keyboard submission, and disabled/loading states.
+- [ ] Add optimistic messages with client IDs and reconcile them from acknowledgements.
+- [ ] Deduplicate broadcast, acknowledgement, and history messages by server ID.
+- [ ] Display failed sends with an accessible retry action.
+- [ ] Refetch recent history after reconnection to recover missed messages.
 
-## Search and History Flows
+## Presence Enhancements
 
-- [ ] Add debounced user search with clear and empty-result states.
-- [ ] Create or reuse a conversation from a search result and select it.
-- [ ] Load the conversation list after authentication.
-- [ ] Load recent history when selecting a conversation.
-- [ ] Add a control for loading older messages using `nextCursor`.
-- [ ] Add an optimistic composer shell; disable actual sends until Feature 6 supplies message creation.
+- [ ] Add typing start/stop events after core message delivery is stable.
+- [ ] Add basic online presence for direct-conversation participants.
+- [ ] Add read receipts only after delivery and reconnection tests pass.
 
 ## Verification
 
-- [ ] Add frontend tests for data transformations and primary interaction states.
-- [ ] Run frontend ESLint and strict type checking.
-- [ ] Verify search, conversation selection, history, responsive navigation, logout, and error states.
-- [ ] Run the production build or preserve the known environment limitation with standalone checks.
+- [ ] Add server integration tests for authentication, membership, persistence, broadcast, and acknowledgements.
+- [ ] Add client tests for optimistic reconciliation, duplicate prevention, failures, and reconnect recovery.
+- [ ] Run frontend and backend lint, strict type checks, tests, builds where supported, and production audits.
+- [ ] Verify a two-user message flow and reconnect recovery against live servers.
 
 ## Completion Criteria
 
-Feature 5 is complete when authenticated users can discover people, open direct conversations, navigate their conversation list, and browse paginated history on desktop and mobile. Message sending becomes active in Feature 6.
+Feature 6 is complete when two authenticated members can exchange persisted messages in real time, optimistic messages reconcile reliably, unauthorized access is rejected, and reconnecting clients recover missed content.
 
 ## Notes and Blockers
 
-- The Feature 4 backend intentionally has no HTTP message-creation endpoint; the composer remains a disabled preview until real-time persistence is implemented in Feature 6.
-- Visual automation remains unavailable unless `agent-browser` is installed.
+- Feature 5 already provides the conversation selection, history, and composer shell required for this phase.
+- Browser automation remains unavailable unless `agent-browser` is installed.
