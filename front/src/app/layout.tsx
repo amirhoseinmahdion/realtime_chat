@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import "@fontsource/vazirmatn/arabic-400.css";
+import "@fontsource/vazirmatn/arabic-500.css";
+import "@fontsource/vazirmatn/arabic-600.css";
+import "@fontsource/vazirmatn/arabic-700.css";
 import "./globals.css";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { LanguageSwitcher } from "@/components/language-switcher";

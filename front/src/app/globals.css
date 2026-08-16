@@ -97,7 +97,9 @@ a {
 }
 
 [dir="rtl"] body {
-  font-family: Tahoma, Arial, Helvetica, sans-serif;
+  font-family: "Vazirmatn", Tahoma, Arial, sans-serif;
+  font-feature-settings: "ss01";
+  line-height: 1.65;
 }
 
 [dir="rtl"] input,
