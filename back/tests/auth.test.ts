@@ -108,11 +108,12 @@ describe("authentication API", () => {
         username: "profile_updated",
         displayName: "After",
         bio: "Available for a chat.",
-        avatarUrl: "https://example.com/avatar.png",
+        avatarUrl: "data:image/png;base64,iVBORw0KGgo=",
       });
     assert.equal(updated.status, 200);
     assert.equal(updated.body.user.username, "profile_updated");
     assert.equal(updated.body.user.bio, "Available for a chat.");
+    assert.equal(updated.body.user.avatarUrl, "data:image/png;base64,iVBORw0KGgo=");
     assert.equal(typeof updated.body.token, "string");
     assert.equal((await request(app).get("/api/users/me").set("Authorization", `Bearer ${token}`)).status, 401);
     assert.equal(

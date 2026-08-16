@@ -12,6 +12,7 @@ const validProfile = {
 describe("profile validation", () => {
   it("accepts valid editable profile fields", () => {
     expect(validateProfile(validProfile)).toBeNull();
+    expect(validateProfile({ ...validProfile, avatarUrl: "data:image/png;base64,iVBORw0KGgo=" })).toBeNull();
   });
 
   it("rejects invalid usernames, empty names, long bios, and unsafe avatar URLs", () => {

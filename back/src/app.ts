@@ -29,7 +29,7 @@ export function createApp(options: AppOptions) {
 
   app.disable("x-powered-by");
   app.use(cors({ origin: options.clientUrl, credentials: true }));
-  app.use(express.json({ limit: "32kb" }));
+  app.use(express.json({ limit: "320kb" }));
 
   app.get("/api/docs.json", (_request, response) => {
     response.status(200).json(openApiDocument);

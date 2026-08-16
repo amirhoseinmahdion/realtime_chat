@@ -42,7 +42,7 @@ This file records project phases that have been implemented and verified. Planne
 ### Delivered
 
 - Added authenticated profile read/update APIs with strict username, display-name, biography, and HTTP(S) avatar validation, normalized uniqueness, Swagger contracts, and replacement JWT issuance.
-- Added a responsive, accessible profile drawer with editing feedback, immediate auth/chat refresh, separate logout, and exact-phrase destructive confirmation.
+- Added a responsive, centered profile dialog with editing feedback, immediate auth/chat refresh, local image selection and preview, sidebar logout, and exact-phrase destructive confirmation.
 - Added transaction-safe account anonymization that invalidates credentials, prevents future login and discovery, and retains message/conversation structure under a deleted-user identity.
 - Revalidated JWTs on protected Socket.IO events so rotated or deleted credentials cannot keep sending messages.
 

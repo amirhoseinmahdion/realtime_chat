@@ -20,7 +20,20 @@ function biography(value: unknown): string {
 
 function avatarUrl(value: unknown): string | null {
   if (value === null || value === undefined || value === "") return null;
-  if (typeof value !== "string" || value.length > 500) {
+  if (typeof value !== "string") {
+    throw new HttpError(400, "VALIDATION_ERROR", "Avatar must be an image or URL");
+  }
+  if (value.startsWith("data:")) {
+    const match = /^data:image\/(png|jpeg|webp|gif);base64,([A-Za-z0-9+/]+={0,2})$/.exec(value);
+    const imageType = match?.[1];
+    const payload = match?.[2];
+    const bytes = payload ? Buffer.from(payload, "base64") : null;
+    if (!imageType || !bytes || bytes.length > 192 * 1024 || !hasImageSignature(imageType, bytes)) {
+      throw new HttpError(400, "VALIDATION_ERROR", "Avatar must be a valid image smaller than 192 KB");
+    }
+    return value;
+  }
+  if (value.length > 500) {
     throw new HttpError(400, "VALIDATION_ERROR", "Avatar URL must be at most 500 characters");
   }
   try {
@@ -30,6 +43,13 @@ function avatarUrl(value: unknown): string | null {
   } catch {
     throw new HttpError(400, "VALIDATION_ERROR", "Avatar URL must be a valid HTTP or HTTPS URL");
   }
+}
+
+function hasImageSignature(type: string, bytes: Buffer): boolean {
+  if (type === "png") return bytes.subarray(0, 4).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47]));
+  if (type === "jpeg") return bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+  if (type === "gif") return bytes.subarray(0, 4).toString("ascii") === "GIF8";
+  return type === "webp" && bytes.subarray(0, 4).toString("ascii") === "RIFF" && bytes.subarray(8, 12).toString("ascii") === "WEBP";
 }
 
 export class ProfileService {
