@@ -45,6 +45,7 @@ const persian: Record<string, string> = {
   "Choose a PNG, JPG, WebP, or GIF image smaller than 500 KB.": "یک تصویر PNG، JPG، WebP یا GIF کوچک‌تر از ۵۰۰ کیلوبایت انتخاب کنید.",
   "Your identity will be anonymized. Message history remains for other conversation members. This cannot be undone.": "هویت شما ناشناس می‌شود و تاریخچه پیام‌ها برای دیگران باقی می‌ماند. این کار قابل بازگشت نیست.",
   "Type DELETE to confirm": "برای تأیید DELETE را وارد کنید",
+  "Switch to light theme": "تغییر به پوسته روشن", "Switch to dark theme": "تغییر به پوسته تیره",
 };
 
 interface LanguageContextValue {

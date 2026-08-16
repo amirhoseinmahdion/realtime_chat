@@ -70,15 +70,30 @@ a {
   animation: fade-up 500ms ease-out both;
 }
 
-.theme-switcher {
+.preference-button {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
   border-color: var(--border);
   background: color-mix(in srgb, var(--surface) 88%, transparent);
   color: var(--muted);
+  box-shadow: 0 12px 35px rgba(2, 6, 23, 0.2);
+  backdrop-filter: blur(14px);
+  transition: transform 160ms ease, color 160ms ease, border-color 160ms ease;
 }
 
-.theme-switcher button[aria-pressed="true"] {
-  background: var(--primary);
-  color: #ffffff;
+.preference-button:hover {
+  color: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 45%, transparent);
+  transform: translateY(-2px);
+}
+
+.preference-button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
 }
 
 [dir="rtl"] body {
