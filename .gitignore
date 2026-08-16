@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Builds and caches
+.next/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# SQLite data
+*.db
+*.db-shm
+*.db-wal
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
