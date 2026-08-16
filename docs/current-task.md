@@ -1,49 +1,39 @@
-# Current Task: Feature 6 — Real-Time Messaging
+# Current Task: Feature 7 — Profile and Account Management
 
 **Status:** Active
 
 ## Goal
 
-Enable authenticated, persisted real-time messaging through Socket.IO. Users must receive new messages without refreshing, recover missed history after reconnecting, and see reliable optimistic delivery state.
+Allow authenticated users to view and edit their profile, log out, and permanently delete their account with clear confirmation and safe history handling.
 
-## Server Socket Layer
+## Backend
 
-- [ ] Authenticate Socket.IO handshakes using the existing JWT and token-version checks.
-- [ ] Join each connection to `user:{userId}` and authorized `conversation:{conversationId}` rooms.
-- [ ] Add validated `conversation:join` and `message:send` events with acknowledgement payloads.
-- [ ] Verify membership before joining rooms or creating messages.
-- [ ] Persist each message transactionally before broadcasting `message:created`.
-- [ ] Update conversation activity when a message is created.
-- [ ] Add safe socket error codes without leaking conversation membership.
+- [ ] Add authenticated profile read and update endpoints.
+- [ ] Validate display name, username, biography, and avatar URL.
+- [ ] Enforce normalized username uniqueness.
+- [ ] Add confirmed account deletion with transaction-safe message anonymization.
+- [ ] Invalidate all credentials after profile-sensitive changes and deletion.
+- [ ] Document profile and deletion contracts in Swagger.
 
-## Client Messaging
+## Frontend
 
-- [ ] Add one authenticated Socket.IO client lifecycle tied to the active session.
-- [ ] Join the selected conversation and clean up listeners when selection changes.
-- [ ] Enable the composer with validation, keyboard submission, and disabled/loading states.
-- [ ] Add optimistic messages with client IDs and reconcile them from acknowledgements.
-- [ ] Deduplicate broadcast, acknowledgement, and history messages by server ID.
-- [ ] Display failed sends with an accessible retry action.
-- [ ] Refetch recent history after reconnection to recover missed messages.
-
-## Presence Enhancements
-
-- [ ] Add typing start/stop events after core message delivery is stable.
-- [ ] Add basic online presence for direct-conversation participants.
-- [ ] Add read receipts only after delivery and reconnection tests pass.
+- [ ] Add an accessible profile panel reachable from the chat sidebar.
+- [ ] Support editing profile fields with validation, loading, success, and error states.
+- [ ] Reflect saved profile data in the auth state and chat UI immediately.
+- [ ] Keep logout available and clearly separate it from destructive deletion.
+- [ ] Require explicit account-deletion confirmation and return to signup afterward.
 
 ## Verification
 
-- [ ] Add server integration tests for authentication, membership, persistence, broadcast, and acknowledgements.
-- [ ] Add client tests for optimistic reconciliation, duplicate prevention, failures, and reconnect recovery.
-- [ ] Run frontend and backend lint, strict type checks, tests, builds where supported, and production audits.
-- [ ] Verify a two-user message flow and reconnect recovery against live servers.
+- [ ] Add backend tests for validation, conflicts, authorization, updates, anonymization, and deletion.
+- [ ] Add frontend tests for editing, errors, logout, and confirmation states.
+- [ ] Run client/server lint, strict type checks, tests, builds where supported, and audits.
+- [ ] Verify profile update and account deletion flows end to end.
 
 ## Completion Criteria
 
-Feature 6 is complete when two authenticated members can exchange persisted messages in real time, optimistic messages reconcile reliably, unauthorized access is rejected, and reconnecting clients recover missed content.
+Feature 7 is complete when users can safely maintain their public profile, end their session, or delete their account without breaking retained conversation history.
 
 ## Notes and Blockers
 
-- Feature 5 already provides the conversation selection, history, and composer shell required for this phase.
-- Browser automation remains unavailable unless `agent-browser` is installed.
+- Historical messages should retain conversation structure while replacing deleted-user identity with an anonymous representation.

@@ -70,7 +70,7 @@ Create the authenticated chat page and connect it to server APIs.
 
 ## Feature 6: Real-Time Messaging
 
-**Status:** Active
+**Status:** Complete
 
 Deliver live chat through Socket.IO.
 
@@ -83,7 +83,7 @@ Deliver live chat through Socket.IO.
 
 ## Feature 7: Profile and Account Management
 
-**Status:** Planned
+**Status:** Active
 
 Allow users to manage their identity and session.
 

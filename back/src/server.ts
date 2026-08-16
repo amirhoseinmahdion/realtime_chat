@@ -1,29 +1,30 @@
 import { createServer } from "node:http";
 
-import { Server } from "socket.io";
-
 import { createApp } from "./app.js";
 import { env } from "./config/env.js";
 import { createDatabase } from "./database/database.js";
+import { AuthService } from "./modules/auth/auth.service.js";
+import { UserRepository } from "./modules/auth/user.repository.js";
+import { ConversationRepository } from "./modules/conversations/conversation.repository.js";
+import { createSocketServer } from "./socket/socket.js";
 
 const database = createDatabase(env.databasePath);
+const authService = new AuthService(new UserRepository(database), env.jwtSecret);
+const conversations = new ConversationRepository(database);
 const app = createApp({
   clientUrl: env.clientUrl,
   database,
   jwtSecret: env.jwtSecret,
+  authService,
+  conversationRepository: conversations,
 });
 
 const httpServer = createServer(app);
 
-export const io = new Server(httpServer, {
-  cors: {
-    origin: env.clientUrl,
-    credentials: true,
-  },
-});
-
-io.on("connection", (socket) => {
-  socket.emit("server:ready", { connected: true });
+export const io = createSocketServer(httpServer, {
+  clientUrl: env.clientUrl,
+  authService,
+  conversations,
 });
 
 httpServer.listen(env.port, () => {

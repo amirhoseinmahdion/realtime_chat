@@ -37,6 +37,8 @@ export interface Message {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+  clientId?: string;
+  delivery?: "sending" | "failed" | "sent";
 }
 
 export interface MessagePage {

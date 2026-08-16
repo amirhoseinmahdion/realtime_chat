@@ -35,6 +35,27 @@ This file records project phases that have been implemented and verified. Planne
 
 ## Completed Features
 
+## 2026-08-16 — Feature 6: Real-Time Messaging
+
+**Status:** Complete
+
+### Delivered
+
+- Added JWT-authenticated Socket.IO connections, private user/conversation rooms, membership enforcement, persistence-before-broadcast, and acknowledgements.
+- Enabled optimistic sending, server reconciliation, failed-send retry, reconnect history recovery, and duplicate prevention.
+- Added typing indicators, online presence, persisted read receipts, and message activity updates.
+- Added real Socket.IO integration tests for authentication, authorized broadcast, persistence, and rejection.
+
+### Verified
+
+- Frontend lint, strict TypeScript, and three Vitest tests passed.
+- Backend lint, strict TypeScript, ten integration tests, and production build passed.
+- Production dependency installation/audits reported no known vulnerabilities.
+
+### Notes
+
+- Browser automation remains unavailable; live two-client delivery is covered through Socket.IO integration tests.
+
 ## 2026-08-16 — Feature 5: Chat and Conversation UI
 
 **Status:** Complete

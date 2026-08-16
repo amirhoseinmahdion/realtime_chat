@@ -22,6 +22,7 @@ interface AuthContextValue {
   signup: (input: { username: string; password: string; displayName: string }) => Promise<void>;
   logout: () => Promise<void>;
   authorizedRequest: <T>(path: string, options?: RequestInit) => Promise<T>;
+  getAccessToken: () => string | null;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -98,9 +99,11 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
     }
   }, []);
 
+  const getAccessToken = useCallback(() => localStorage.getItem(tokenKey), []);
+
   const value = useMemo(
-    () => ({ user, isLoading, login, signup, logout, authorizedRequest }),
-    [user, isLoading, login, signup, logout, authorizedRequest],
+    () => ({ user, isLoading, login, signup, logout, authorizedRequest, getAccessToken }),
+    [user, isLoading, login, signup, logout, authorizedRequest, getAccessToken],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

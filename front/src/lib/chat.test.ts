@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { mergeConversations, mergeMessages } from "./chat";
+import { mergeConversations, mergeMessages, replaceOptimisticMessage } from "./chat";
 import type { Conversation, Message } from "@/types/chat";
 
 describe("chat data merging", () => {
@@ -23,6 +23,19 @@ describe("chat data merging", () => {
     const result = mergeMessages([latest], [earliest, latest]);
 
     expect(result.map(({ id }) => id)).toEqual(["earliest", "latest"]);
+  });
+
+  it("reconciles an optimistic client message with its saved server message", () => {
+    const optimistic = {
+      ...message("client:one", "2026-08-16T10:00:00.000Z"),
+      clientId: "one",
+      delivery: "sending" as const,
+    };
+    const saved = { ...message("server-one", "2026-08-16T10:00:01.000Z"), delivery: "sent" as const };
+
+    const result = replaceOptimisticMessage([optimistic], "one", saved);
+
+    expect(result).toEqual([saved]);
   });
 });
 

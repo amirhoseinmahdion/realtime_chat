@@ -16,11 +16,16 @@ interface AppOptions {
   clientUrl: string;
   database: ChatDatabase;
   jwtSecret: string;
+  authService?: AuthService;
+  conversationRepository?: ConversationRepository;
 }
 
 export function createApp(options: AppOptions) {
   const app = express();
-  const authService = new AuthService(new UserRepository(options.database), options.jwtSecret);
+  const authService =
+    options.authService ?? new AuthService(new UserRepository(options.database), options.jwtSecret);
+  const conversationRepository =
+    options.conversationRepository ?? new ConversationRepository(options.database);
 
   app.disable("x-powered-by");
   app.use(cors({ origin: options.clientUrl, credentials: true }));
@@ -42,7 +47,7 @@ export function createApp(options: AppOptions) {
   app.use("/api/users", createUserRouter(options.database, authService));
   app.use(
     "/api/conversations",
-    createConversationRouter(new ConversationRepository(options.database), authService),
+    createConversationRouter(conversationRepository, authService),
   );
   app.use(notFoundHandler);
   app.use(errorHandler);

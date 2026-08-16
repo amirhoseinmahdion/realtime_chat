@@ -125,6 +125,62 @@ export class ConversationRepository {
     };
   }
 
+  isMember(conversationId: string, userId: string): boolean {
+    return Boolean(
+      this.database
+        .prepare("SELECT 1 FROM conversation_members WHERE conversation_id = ? AND user_id = ?")
+        .get(conversationId, userId),
+    );
+  }
+
+  createMessage(conversationId: string, senderId: string, content: string) {
+    if (!this.isMember(conversationId, senderId)) {
+      throw new HttpError(404, "CONVERSATION_NOT_FOUND", "Conversation not found");
+    }
+    const trimmedContent = content.trim();
+    if (!trimmedContent || trimmedContent.length > 4000) {
+      throw new HttpError(400, "VALIDATION_ERROR", "Message must be 1-4000 characters");
+    }
+
+    const id = randomUUID();
+    const timestamp = new Date().toISOString();
+    this.database.transaction(() => {
+      this.database
+        .prepare(
+          `INSERT INTO messages
+           (id, conversation_id, sender_id, content, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, ?)`,
+        )
+        .run(id, conversationId, senderId, trimmedContent, timestamp, timestamp);
+      this.database
+        .prepare("UPDATE conversations SET updated_at = ? WHERE id = ?")
+        .run(timestamp, conversationId);
+    })();
+
+    const row = this.database
+      .prepare(
+        `SELECT m.*, u.username AS sender_username
+         FROM messages m JOIN users u ON u.id = m.sender_id WHERE m.id = ?`,
+      )
+      .get(id) as MessageRow;
+    return mapMessage(row);
+  }
+
+  markRead(conversationId: string, userId: string, messageId: string): void {
+    if (!this.isMember(conversationId, userId)) {
+      throw new HttpError(404, "CONVERSATION_NOT_FOUND", "Conversation not found");
+    }
+    const message = this.database
+      .prepare("SELECT 1 FROM messages WHERE id = ? AND conversation_id = ?")
+      .get(messageId, conversationId);
+    if (!message) throw new HttpError(400, "INVALID_MESSAGE", "Message is invalid");
+    this.database
+      .prepare(
+        "UPDATE conversation_members SET last_read_message_id = ? WHERE conversation_id = ? AND user_id = ?",
+      )
+      .run(messageId, conversationId, userId);
+  }
+
   private queryConversations(userId: string, conversationId?: string): ConversationRow[] {
     const idFilter = conversationId ? "AND c.id = ?" : "";
     return this.database

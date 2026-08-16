@@ -16,6 +16,17 @@ export function mergeMessages(current: Message[], incoming: Message[]): Message[
   );
 }
 
+export function replaceOptimisticMessage(
+  current: Message[],
+  clientId: string,
+  replacement: Message,
+): Message[] {
+  return mergeMessages(
+    current.filter((message) => message.clientId !== clientId),
+    [replacement],
+  );
+}
+
 function conversationActivity(conversation: Conversation): number {
   return new Date(conversation.lastMessage?.createdAt ?? conversation.updatedAt).getTime();
 }
