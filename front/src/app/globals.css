@@ -96,6 +96,7 @@ a {
 [data-theme="light"] .chat-frame,
 [data-theme="light"] .chat-sidebar,
 [data-theme="light"] .chat-panel,
+[data-theme="light"] .profile-panel,
 [data-theme="light"] .auth-main {
   background: var(--surface) !important;
   border-color: var(--border) !important;

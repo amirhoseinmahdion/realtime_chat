@@ -5,6 +5,8 @@ import { HttpError } from "../../errors/http-error.js";
 import type { AuthenticatedRequest } from "../auth/auth.middleware.js";
 import { createAuthMiddleware } from "../auth/auth.middleware.js";
 import type { AuthService } from "../auth/auth.service.js";
+import { UserRepository } from "../auth/user.repository.js";
+import { ProfileService } from "./profile.service.js";
 
 interface SearchUserRow {
   id: string;
@@ -16,7 +18,23 @@ interface SearchUserRow {
 
 export function createUserRouter(database: ChatDatabase, authService: AuthService): Router {
   const router = Router();
+  const profiles = new ProfileService(new UserRepository(database), authService);
   router.use(createAuthMiddleware(authService));
+
+  router.get("/me", (request, response) => {
+    response.status(200).json({ user: profiles.get((request as AuthenticatedRequest).authUser) });
+  });
+
+  router.patch("/me", (request, response) => {
+    response
+      .status(200)
+      .json(profiles.update((request as AuthenticatedRequest).authUser, request.body as Record<string, unknown>));
+  });
+
+  router.delete("/me", (request, response) => {
+    profiles.delete((request as AuthenticatedRequest).authUser, request.body as Record<string, unknown>);
+    response.status(204).send();
+  });
 
   router.get("/search", (request, response) => {
     const query = typeof request.query.q === "string" ? request.query.q.trim() : "";
@@ -36,6 +54,7 @@ export function createUserRouter(database: ChatDatabase, authService: AuthServic
         `SELECT id, username, display_name, bio, avatar_url
          FROM users
          WHERE id != ?
+           AND deleted_at IS NULL
            AND (lower(username) LIKE ? ESCAPE '\\' OR lower(display_name) LIKE ? ESCAPE '\\')
          ORDER BY CASE WHEN lower(username) = lower(?) THEN 0 ELSE 1 END, lower(username)
          LIMIT ?`,

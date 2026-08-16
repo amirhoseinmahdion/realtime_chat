@@ -21,8 +21,17 @@ interface AuthContextValue {
   login: (username: string, password: string) => Promise<void>;
   signup: (input: { username: string; password: string; displayName: string }) => Promise<void>;
   logout: () => Promise<void>;
+  updateProfile: (input: ProfileInput) => Promise<void>;
+  deleteAccount: (confirmation: string) => Promise<void>;
   authorizedRequest: <T>(path: string, options?: RequestInit) => Promise<T>;
   getAccessToken: () => string | null;
+}
+
+export interface ProfileInput {
+  username: string;
+  displayName: string;
+  bio: string;
+  avatarUrl: string | null;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -81,6 +90,32 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
     }
   }, []);
 
+  const updateProfile = useCallback(
+    async (input: ProfileInput) => {
+      const token = localStorage.getItem(tokenKey);
+      if (!token) throw new ApiError("Your session has expired. Please sign in again.", 401, "UNAUTHORIZED");
+      const response = await apiRequest<AuthResponse>(
+        "/api/users/me",
+        { method: "PATCH", body: JSON.stringify(input) },
+        token,
+      );
+      saveSession(response);
+    },
+    [saveSession],
+  );
+
+  const deleteAccount = useCallback(async (confirmation: string) => {
+    const token = localStorage.getItem(tokenKey);
+    if (!token) throw new ApiError("Your session has expired. Please sign in again.", 401, "UNAUTHORIZED");
+    await apiRequest<void>(
+      "/api/users/me",
+      { method: "DELETE", body: JSON.stringify({ confirmation }) },
+      token,
+    );
+    localStorage.removeItem(tokenKey);
+    setUser(null);
+  }, []);
+
   const authorizedRequest = useCallback(async <T,>(path: string, options: RequestInit = {}) => {
     const token = localStorage.getItem(tokenKey);
     if (!token) {
@@ -102,8 +137,8 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
   const getAccessToken = useCallback(() => localStorage.getItem(tokenKey), []);
 
   const value = useMemo(
-    () => ({ user, isLoading, login, signup, logout, authorizedRequest, getAccessToken }),
-    [user, isLoading, login, signup, logout, authorizedRequest, getAccessToken],
+    () => ({ user, isLoading, login, signup, logout, updateProfile, deleteAccount, authorizedRequest, getAccessToken }),
+    [user, isLoading, login, signup, logout, updateProfile, deleteAccount, authorizedRequest, getAccessToken],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

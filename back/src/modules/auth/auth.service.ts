@@ -9,7 +9,7 @@ import { toPublicUser, UserRepository } from "./user.repository.js";
 
 const usernamePattern = /^[a-z0-9_]{3,30}$/;
 
-function normalizeUsername(value: unknown): string {
+export function normalizeUsername(value: unknown): string {
   if (typeof value !== "string") {
     throw new HttpError(400, "VALIDATION_ERROR", "Username is required");
   }
@@ -68,7 +68,7 @@ export class AuthService {
     const password = validatePassword(body.password);
     const user = this.users.findByUsername(username);
 
-    if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+    if (!user || user.deletedAt || !(await bcrypt.compare(password, user.passwordHash))) {
       throw new HttpError(401, "INVALID_CREDENTIALS", "Invalid username or password");
     }
 
@@ -79,7 +79,7 @@ export class AuthService {
     try {
       const payload = jwt.verify(token, this.jwtSecret) as AuthTokenPayload;
       const user = this.users.findById(payload.sub);
-      if (!user || user.tokenVersion !== payload.tokenVersion) {
+      if (!user || user.deletedAt || user.tokenVersion !== payload.tokenVersion) {
         throw new Error("Token has been invalidated");
       }
       return user;
@@ -92,6 +92,10 @@ export class AuthService {
     if (!this.users.incrementTokenVersion(user.id, user.tokenVersion)) {
       throw new HttpError(401, "UNAUTHORIZED", "Authentication token is no longer valid");
     }
+  }
+
+  createSession(user: StoredUser): { user: PublicUser; token: string } {
+    return { user: toPublicUser(user), token: this.signToken(user) };
   }
 
   private signToken(user: StoredUser): string {

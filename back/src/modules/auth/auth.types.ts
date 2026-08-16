@@ -11,6 +11,7 @@ export interface PublicUser {
 export interface StoredUser extends PublicUser {
   passwordHash: string;
   tokenVersion: number;
+  deletedAt: string | null;
 }
 
 export interface AuthTokenPayload {

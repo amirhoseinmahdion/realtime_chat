@@ -14,7 +14,7 @@ export const openApiDocument = {
   tags: [
     { name: "System", description: "Server status endpoints" },
     { name: "Authentication", description: "Account access and JWT lifecycle" },
-    { name: "Users", description: "Authenticated user discovery" },
+    { name: "Users", description: "User discovery, profiles, and account lifecycle" },
     { name: "Conversations", description: "Direct chats and message history" },
   ],
   components: {
@@ -226,6 +226,73 @@ export const openApiDocument = {
               },
             },
           },
+          "400": { $ref: "#/components/responses/ValidationError" },
+          "401": { $ref: "#/components/responses/Unauthorized" },
+        },
+      },
+    },
+    "/api/users/me": {
+      get: {
+        tags: ["Users"],
+        summary: "Read the current profile",
+        security: [{ bearerAuth: [] }],
+        responses: {
+          "200": {
+            description: "Current profile.",
+            content: { "application/json": { schema: { type: "object", properties: { user: { $ref: "#/components/schemas/User" } } } } },
+          },
+          "401": { $ref: "#/components/responses/Unauthorized" },
+        },
+      },
+      patch: {
+        tags: ["Users"],
+        summary: "Update the current profile and rotate credentials",
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                required: ["username", "displayName", "bio", "avatarUrl"],
+                properties: {
+                  username: { type: "string", minLength: 3, maxLength: 30 },
+                  displayName: { type: "string", minLength: 1, maxLength: 50 },
+                  bio: { type: "string", maxLength: 160 },
+                  avatarUrl: { type: ["string", "null"], maxLength: 500 },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          "200": {
+            description: "Updated profile and replacement JWT.",
+            content: { "application/json": { schema: { $ref: "#/components/schemas/AuthResponse" } } },
+          },
+          "400": { $ref: "#/components/responses/ValidationError" },
+          "401": { $ref: "#/components/responses/Unauthorized" },
+          "409": { description: "Username already exists." },
+        },
+      },
+      delete: {
+        tags: ["Users"],
+        summary: "Anonymize and permanently disable the current account",
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                required: ["confirmation"],
+                properties: { confirmation: { type: "string", const: "DELETE" } },
+              },
+            },
+          },
+        },
+        responses: {
+          "204": { description: "Account anonymized and credentials invalidated." },
           "400": { $ref: "#/components/responses/ValidationError" },
           "401": { $ref: "#/components/responses/Unauthorized" },
         },

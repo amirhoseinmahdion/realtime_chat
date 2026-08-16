@@ -38,7 +38,7 @@ export class ConversationRepository {
     if (currentUserId === otherUserId) {
       throw new HttpError(400, "VALIDATION_ERROR", "You cannot start a conversation with yourself");
     }
-    if (!this.database.prepare("SELECT 1 FROM users WHERE id = ?").get(otherUserId)) {
+    if (!this.database.prepare("SELECT 1 FROM users WHERE id = ? AND deleted_at IS NULL").get(otherUserId)) {
       throw new HttpError(404, "USER_NOT_FOUND", "User not found");
     }
 

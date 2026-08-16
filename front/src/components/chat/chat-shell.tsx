@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
 
 import { BrandMark } from "@/components/brand-mark";
+import { ProfilePanel } from "@/components/profile/profile-panel";
 import { ApiError } from "@/lib/api";
 import { mergeConversations, mergeMessages, replaceOptimisticMessage } from "@/lib/chat";
 import { useAuth } from "@/providers/auth-provider";
@@ -33,6 +34,7 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
   const [isParticipantOnline, setIsParticipantOnline] = useState(false);
   const [readMessageId, setReadMessageId] = useState<string | null>(null);
   const [unreadCounts, setUnreadCounts] = useState<Record<string, number>>({});
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const selectedConversation = useMemo(
     () => conversations.find((conversation) => conversation.id === selectedId) ?? null,
@@ -143,7 +145,7 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [currentUser.id, getAccessToken, loadMessages]);
+  }, [currentUser.id, currentUser.updatedAt, getAccessToken, loadMessages]);
 
   useEffect(() => {
     const latestIncoming = messages.findLast((message) => message.sender.id !== currentUser.id);
@@ -272,7 +274,7 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
     <main className="chat-page h-dvh overflow-hidden bg-[#070b14] p-0 sm:p-3 lg:p-5">
       <div className="chat-frame mx-auto flex h-full max-w-[1500px] overflow-hidden border-white/10 bg-[#0a101c] shadow-2xl shadow-black/30 sm:rounded-3xl sm:border">
         <aside className={`chat-sidebar ${selectedId ? "hidden lg:flex" : "flex"} w-full shrink-0 flex-col border-r border-white/8 bg-[#0b1220] lg:w-[360px] xl:w-[400px]`}>
-          <SidebarHeader currentUser={currentUser} onLogout={handleLogout} />
+          <SidebarHeader currentUser={currentUser} onLogout={handleLogout} onOpenProfile={() => setIsProfileOpen(true)} />
           <div className="border-b border-white/8 px-4 pb-4">
             <SearchBox isSearching={isSearching} onChange={updateQuery} query={query} />
           </div>
@@ -298,12 +300,13 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
           )}
         </section>
       </div>
+      {isProfileOpen ? <ProfilePanel onClose={() => setIsProfileOpen(false)} user={currentUser} /> : null}
     </main>
   );
 }
 
-function SidebarHeader({ currentUser, onLogout }: Readonly<{ currentUser: User; onLogout: () => void }>) {
-  return <header className="flex items-center justify-between px-4 py-4 sm:px-5 sm:py-5"><div className="flex min-w-0 items-center gap-3"><BrandMark /><div className="min-w-0"><h1 className="truncate text-base font-semibold tracking-tight">EchoLine</h1><p className="truncate text-xs text-slate-500">@{currentUser.username}</p></div></div><button aria-label="Sign out" className="grid size-9 place-items-center rounded-xl text-slate-500 transition hover:bg-white/5 hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300" onClick={onLogout} title="Sign out" type="button"><LogoutIcon /></button></header>;
+function SidebarHeader({ currentUser, onLogout, onOpenProfile }: Readonly<{ currentUser: User; onLogout: () => void; onOpenProfile: () => void }>) {
+  return <header className="flex items-center justify-between px-4 py-4 sm:px-5 sm:py-5"><button className="flex min-w-0 items-center gap-3 rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300" onClick={onOpenProfile} title="Open profile" type="button"><BrandMark /><div className="min-w-0"><h1 className="truncate text-base font-semibold tracking-tight">EchoLine</h1><p className="truncate text-xs text-slate-500">@{currentUser.username} · Profile</p></div></button><button aria-label="Sign out" className="grid size-9 place-items-center rounded-xl text-slate-500 transition hover:bg-white/5 hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300" onClick={onLogout} title="Sign out" type="button"><LogoutIcon /></button></header>;
 }
 
 function SearchBox({ isSearching, onChange, query }: Readonly<{ isSearching: boolean; onChange: (value: string) => void; query: string }>) {

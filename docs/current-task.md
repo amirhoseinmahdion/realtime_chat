@@ -1,39 +1,35 @@
-# Current Task: Feature 7 — Profile and Account Management
+# Current Task: Feature 8 — Quality, Security, and Release Readiness
 
 **Status:** Active
 
 ## Goal
 
-Allow authenticated users to view and edit their profile, log out, and permanently delete their account with clear confirmation and safe history handling.
+Prepare EchoLine for reliable use with stronger API protections, startup validation, diagnostics, accessibility checks, and complete setup documentation.
 
-## Backend
+## Security and Reliability
 
-- [ ] Add authenticated profile read and update endpoints.
-- [ ] Validate display name, username, biography, and avatar URL.
-- [ ] Enforce normalized username uniqueness.
-- [ ] Add confirmed account deletion with transaction-safe message anonymization.
-- [ ] Invalidate all credentials after profile-sensitive changes and deletion.
-- [ ] Document profile and deletion contracts in Swagger.
+- [ ] Validate all required environment variables during server startup.
+- [ ] Rate-limit authentication, user search, and message creation.
+- [ ] Add centralized structured request and error logging without exposing secrets.
+- [ ] Review safe error responses and security-sensitive HTTP defaults.
 
-## Frontend
+## Quality and Accessibility
 
-- [ ] Add an accessible profile panel reachable from the chat sidebar.
-- [ ] Support editing profile fields with validation, loading, success, and error states.
-- [ ] Reflect saved profile data in the auth state and chat UI immediately.
-- [ ] Keep logout available and clearly separate it from destructive deletion.
-- [ ] Require explicit account-deletion confirmation and return to signup afterward.
+- [ ] Add backend integration coverage for new limits, configuration, and error behavior.
+- [ ] Expand frontend flow tests for authentication, chat, profile, and failure states.
+- [ ] Audit labels, keyboard interactions, focus handling, and responsive layouts.
+- [ ] Add user-facing recovery states for unavailable API and Socket.IO connections.
 
-## Verification
+## Documentation and Release Verification
 
-- [ ] Add backend tests for validation, conflicts, authorization, updates, anonymization, and deletion.
-- [ ] Add frontend tests for editing, errors, logout, and confirmation states.
-- [ ] Run client/server lint, strict type checks, tests, builds where supported, and audits.
-- [ ] Verify profile update and account deletion flows end to end.
+- [ ] Document installation, environment setup, database initialization, testing, and production commands.
+- [ ] Run frontend and backend lint, strict type checks, tests, builds where supported, and dependency audits.
+- [ ] Exercise the complete signup-to-chat-to-profile flow and record known environment limitations.
 
 ## Completion Criteria
 
-Feature 7 is complete when users can safely maintain their public profile, end their session, or delete their account without breaking retained conversation history.
+Feature 8 is complete when security controls are tested, operational failures are diagnosable, core flows are accessible, and a new contributor can configure, verify, and build the application from the documentation.
 
 ## Notes and Blockers
 
-- Historical messages should retain conversation structure while replacing deleted-user identity with an anonymous representation.
+- Frontend production builds remain subject to the documented Next.js 16.3.1 sandbox limitation; standalone lint, type checks, tests, and development-route checks remain required.

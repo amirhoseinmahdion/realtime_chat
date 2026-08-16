@@ -83,7 +83,7 @@ Deliver live chat through Socket.IO.
 
 ## Feature 7: Profile and Account Management
 
-**Status:** Active
+**Status:** Complete
 
 Allow users to manage their identity and session.
 
@@ -96,7 +96,7 @@ Allow users to manage their identity and session.
 
 ## Feature 8: Quality, Security, and Release Readiness
 
-**Status:** Planned
+**Status:** Active
 
 Prepare the application for reliable use.
 

@@ -84,4 +84,9 @@ function migrate(database: ChatDatabase): void {
     CREATE INDEX IF NOT EXISTS conversations_activity_idx
       ON conversations(updated_at DESC);
   `);
+
+  const userColumns = database.prepare("PRAGMA table_info(users)").all() as Array<{ name: string }>;
+  if (!userColumns.some((column) => column.name === "deleted_at")) {
+    database.exec("ALTER TABLE users ADD COLUMN deleted_at TEXT");
+  }
 }

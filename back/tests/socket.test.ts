@@ -3,6 +3,7 @@ import { createServer } from "node:http";
 import { after, before, describe, it } from "node:test";
 
 import { io as createClient, type Socket as ClientSocket } from "socket.io-client";
+import type { Express } from "express";
 import request from "supertest";
 
 import { createApp } from "../src/app.js";
@@ -14,6 +15,7 @@ import { createSocketServer } from "../src/socket/socket.js";
 
 describe("real-time messaging", () => {
   let database: ChatDatabase;
+  let app: Express;
   let baseUrl: string;
   let closeServer: () => Promise<void>;
   let alex: { id: string; token: string };
@@ -25,7 +27,7 @@ describe("real-time messaging", () => {
     database = createDatabase(":memory:");
     const authService = new AuthService(new UserRepository(database), "socket-test-secret");
     conversations = new ConversationRepository(database);
-    const app = createApp({
+    app = createApp({
       clientUrl: "http://localhost:3000",
       database,
       jwtSecret: "socket-test-secret",
@@ -84,6 +86,28 @@ describe("real-time messaging", () => {
     const socket = createClient(baseUrl, { auth: {}, reconnection: false });
     const error = await new Promise<Error>((resolve) => socket.once("connect_error", resolve));
     assert.equal(error.message, "UNAUTHORIZED");
+    socket.disconnect();
+  });
+
+  it("rejects events from a socket after its credential is invalidated", async () => {
+    const socket = await connect(baseUrl, alex.token);
+    const logout = await request(app)
+      .post("/api/auth/logout")
+      .set("Authorization", `Bearer ${alex.token}`);
+    assert.equal(logout.status, 204);
+
+    const acknowledgement = await emitAck(socket, "message:send", {
+      conversationId,
+      content: "This must not be persisted",
+    });
+    assert.equal(acknowledgement.ok, false);
+    assert.equal(acknowledgement.code, "UNAUTHORIZED");
+    assert.equal(
+      conversations
+        .getMessages(conversationId, blair.id, 20)
+        .messages.some((message) => message.content === "This must not be persisted"),
+      false,
+    );
     socket.disconnect();
   });
 });
