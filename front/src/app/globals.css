@@ -13,6 +13,18 @@
   --danger: #fb7185;
 }
 
+:root[data-theme="light"] {
+  color-scheme: light;
+  --background: #f3f7fa;
+  --surface: #ffffff;
+  --surface-raised: #edf3f6;
+  --border: rgba(15, 23, 42, 0.12);
+  --text: #10202b;
+  --muted: #607180;
+  --primary: #0f9f91;
+  --primary-strong: #0d8076;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -56,4 +68,68 @@ a {
 
 .animate-fade-up {
   animation: fade-up 500ms ease-out both;
+}
+
+.theme-switcher {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--muted);
+}
+
+.theme-switcher button[aria-pressed="true"] {
+  background: var(--primary);
+  color: #062d29;
+}
+
+[data-theme="light"] body {
+  background:
+    radial-gradient(circle at 15% 10%, rgba(15, 159, 145, 0.09), transparent 28rem),
+    radial-gradient(circle at 90% 90%, rgba(14, 116, 144, 0.06), transparent 30rem),
+    var(--background);
+}
+
+[data-theme="light"] .chat-page,
+[data-theme="light"] .auth-page {
+  background: var(--background) !important;
+}
+
+[data-theme="light"] .chat-frame,
+[data-theme="light"] .chat-sidebar,
+[data-theme="light"] .chat-panel,
+[data-theme="light"] .auth-main {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="light"] .auth-aside {
+  background: linear-gradient(145deg, #e8f8f5, #eef5fb);
+  border-color: var(--border) !important;
+}
+
+[data-theme="light"] .text-white,
+[data-theme="light"] .text-slate-100,
+[data-theme="light"] .text-slate-200,
+[data-theme="light"] .text-slate-300 {
+  color: var(--text) !important;
+}
+
+[data-theme="light"] .text-slate-400,
+[data-theme="light"] .text-slate-500,
+[data-theme="light"] .text-slate-600 {
+  color: var(--muted) !important;
+}
+
+[data-theme="light"] input:not([type="submit"]) {
+  border-color: var(--border) !important;
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  color: var(--text) !important;
+}
+
+[data-theme="light"] .chat-frame [class*="border-white"],
+[data-theme="light"] .auth-page [class*="border-white"] {
+  border-color: var(--border) !important;
+}
+
+[data-theme="light"] .chat-frame [class*="bg-white/"] {
+  background-color: var(--surface-raised) !important;
 }

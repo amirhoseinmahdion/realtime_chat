@@ -269,9 +269,9 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
   }
 
   return (
-    <main className="h-dvh overflow-hidden bg-[#070b14] p-0 sm:p-3 lg:p-5">
-      <div className="mx-auto flex h-full max-w-[1500px] overflow-hidden border-white/10 bg-[#0a101c] shadow-2xl shadow-black/30 sm:rounded-3xl sm:border">
-        <aside className={`${selectedId ? "hidden lg:flex" : "flex"} w-full shrink-0 flex-col border-r border-white/8 bg-[#0b1220] lg:w-[360px] xl:w-[400px]`}>
+    <main className="chat-page h-dvh overflow-hidden bg-[#070b14] p-0 sm:p-3 lg:p-5">
+      <div className="chat-frame mx-auto flex h-full max-w-[1500px] overflow-hidden border-white/10 bg-[#0a101c] shadow-2xl shadow-black/30 sm:rounded-3xl sm:border">
+        <aside className={`chat-sidebar ${selectedId ? "hidden lg:flex" : "flex"} w-full shrink-0 flex-col border-r border-white/8 bg-[#0b1220] lg:w-[360px] xl:w-[400px]`}>
           <SidebarHeader currentUser={currentUser} onLogout={handleLogout} />
           <div className="border-b border-white/8 px-4 pb-4">
             <SearchBox isSearching={isSearching} onChange={updateQuery} query={query} />
@@ -285,7 +285,7 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
           </div>
         </aside>
 
-        <section className={`${selectedId ? "flex" : "hidden lg:flex"} min-w-0 flex-1 flex-col bg-[#080e19]`}>
+        <section className={`chat-panel ${selectedId ? "flex" : "hidden lg:flex"} min-w-0 flex-1 flex-col bg-[#080e19]`}>
           {selectedConversation ? (
             <>
               <ConversationHeader conversation={selectedConversation} isOnline={isParticipantOnline} isTyping={typingUserId === selectedConversation.participant?.id} onBack={() => setSelectedId(null)} />

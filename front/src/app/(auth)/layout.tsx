@@ -10,8 +10,8 @@ const highlights = [
 
 export default function AuthLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <main className="min-h-screen lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)]">
-      <section className="relative hidden min-h-screen overflow-hidden border-r border-white/8 px-12 py-10 lg:flex lg:flex-col">
+    <main className="auth-page min-h-screen lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)]">
+      <section className="auth-aside relative hidden min-h-screen overflow-hidden border-r border-white/8 px-12 py-10 lg:flex lg:flex-col">
         <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(15,23,42,.2),rgba(8,47,73,.18))]" />
         <div className="absolute -left-24 top-1/3 size-80 rounded-full bg-teal-400/8 blur-3xl" />
         <div className="relative flex items-center gap-3">
@@ -47,7 +47,7 @@ export default function AuthLayout({ children }: Readonly<{ children: ReactNode 
         <p className="relative text-xs text-slate-600">Built for thoughtful conversations.</p>
       </section>
 
-      <section className="flex min-h-screen flex-col px-5 py-6 sm:px-10 lg:px-14 xl:px-20">
+      <section className="auth-main flex min-h-screen flex-col px-5 py-6 sm:px-10 lg:px-14 xl:px-20">
         <div className="flex items-center gap-3 lg:hidden">
           <BrandMark />
           <span className="text-lg font-semibold tracking-tight">EchoLine</span>
