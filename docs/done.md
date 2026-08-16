@@ -35,6 +35,27 @@ This file records project phases that have been implemented and verified. Planne
 
 ## Completed Features
 
+## 2026-08-16 — Enhancement: Free Hosted Test Environment
+
+**Status:** Complete
+
+### Delivered
+
+- Deployed the Next.js client to `https://front-self-tau.vercel.app` and the Express/Socket.IO API to `https://online-chat-api-amirhosein.onrender.com`.
+- Added a Render Blueprint with generated secrets, exact-origin CORS, a health check, and explicit ephemeral SQLite configuration.
+- Linked the production client to the hosted HTTP API and Socket.IO endpoint without committing credentials.
+
+### Verified
+
+- Backend lint, strict TypeScript, 20 integration tests, and production build passed.
+- Frontend lint, strict TypeScript, eight tests, and the Vercel production build passed.
+- Hosted health, OpenAPI, browser rendering, two-user signup, direct conversation creation, WebSocket room joins, message acknowledgement, broadcast, and persisted history passed.
+
+### Notes
+
+- Render Free can sleep after inactivity and erase the local SQLite database after sleep, restart, or redeployment. This environment is for testing only.
+- The local deployment commit could not be pushed because GitHub HTTPS and SSH authentication are not configured on this machine.
+
 ## 2026-08-16 — Feature 8: Quality, Security, and Release Readiness
 
 **Status:** Complete

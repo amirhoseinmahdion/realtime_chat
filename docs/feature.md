@@ -119,6 +119,6 @@ Consider these only after Features 1–8 are complete:
 
 ## Enhancement: Free Hosted Test Environment
 
-**Status:** Active
+**Status:** Complete
 
 Deploy the client to Vercel and the Express/Socket.IO service to Render for temporary public testing. Retain SQLite only with an explicit ephemeral-data warning; migrate to hosted PostgreSQL before production use.
