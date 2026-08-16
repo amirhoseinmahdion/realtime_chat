@@ -102,3 +102,12 @@ db.pragma("journal_mode = WAL");
 ```
 
 Use parameterized statements for every query. Database operations and JWT/password logic must remain on the backend.
+
+## Free Hosted Testing
+
+- Deploy `front/` as a Vercel Hobby project.
+- Deploy `back/` as a Render Free web service using the root `render.yaml` Blueprint.
+- Set `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_SOCKET_URL` to the Render HTTPS URL.
+- Set Render `CLIENT_URL` to the exact Vercel HTTPS origin.
+
+The free Render service has an ephemeral filesystem. `DATABASE_PATH=/tmp/online-chat/chat.db` is acceptable only for temporary testing because accounts, avatars, conversations, and messages can disappear after sleep, restart, or deployment. Production hosting must replace SQLite with a durable hosted relational database such as PostgreSQL.
