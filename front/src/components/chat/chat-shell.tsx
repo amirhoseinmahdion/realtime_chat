@@ -278,6 +278,7 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
           <div className="border-b border-white/8 px-4 pb-4">
             <SearchBox isSearching={isSearching} onChange={updateQuery} query={query} />
           </div>
+          {error ? <ConnectionNotice message={error} onRetry={() => window.location.reload()} /> : null}
           <div className="min-h-0 flex-1 overflow-y-auto">
             {query.trim() ? (
               <SearchResults isLoading={isSearching} onSelect={startConversation} pendingUserId={isStartingChat} users={searchResults} />
@@ -291,7 +292,6 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
           {selectedConversation ? (
             <>
               <ConversationHeader conversation={selectedConversation} isOnline={isParticipantOnline} isTyping={typingUserId === selectedConversation.participant?.id} onBack={() => setSelectedId(null)} />
-              {error ? <div className="mx-4 mt-3 rounded-xl border border-rose-400/20 bg-rose-400/8 px-4 py-3 text-sm text-rose-300" role="alert">{error}</div> : null}
               <MessageHistory currentUserId={currentUser.id} isLoading={isLoadingMessages} isLoadingOlder={isLoadingOlder} messages={messages} nextCursor={nextCursor} onLoadOlder={loadOlderMessages} onRetry={(message) => sendMessage(message.content ?? "")} readMessageId={readMessageId} />
               <Composer value={composerValue} onChange={(value) => { setComposerValue(value); socketRef.current?.emit("typing:change", { conversationId: selectedIdRef.current, typing: Boolean(value.trim()) }); }} onSend={() => sendMessage()} />
             </>
@@ -338,6 +338,7 @@ function MessageHistory({ currentUserId, isLoading, isLoadingOlder, messages, ne
 function Composer({ onChange, onSend, value }: Readonly<{ onChange: (value: string) => void; onSend: () => void; value: string }>) { return <footer className="shrink-0 border-t border-white/8 p-3 sm:p-4"><form className="flex items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.035] p-2 pl-4" onSubmit={(event) => { event.preventDefault(); onSend(); }}><input aria-label="Message" autoComplete="off" className="min-w-0 flex-1 bg-transparent text-sm text-slate-100 outline-none placeholder:text-slate-600" maxLength={4000} onChange={(event) => onChange(event.target.value)} placeholder="Write a message…" value={value} /><button aria-label="Send message" className="grid size-10 place-items-center rounded-xl bg-teal-300 text-slate-950 transition hover:bg-teal-200 disabled:cursor-not-allowed disabled:opacity-40" disabled={!value.trim()} type="submit"><SendIcon /></button></form></footer>; }
 function EmptyConversation() { return <div className="grid flex-1 place-items-center px-6 text-center"><div><span className="mx-auto grid size-16 place-items-center rounded-3xl border border-teal-300/15 bg-teal-300/8 text-teal-300"><ChatIcon /></span><h2 className="mt-5 text-xl font-semibold">Choose a conversation</h2><p className="mt-2 max-w-sm text-sm leading-6 text-slate-500">Select a chat from the sidebar or search for someone new.</p></div></div>; }
 function SidebarEmpty({ description, title }: Readonly<{ description: string; title: string }>) { return <div className="px-8 py-16 text-center"><p className="text-sm font-semibold text-slate-300">{title}</p><p className="mt-2 text-xs leading-5 text-slate-600">{description}</p></div>; }
+function ConnectionNotice({ message, onRetry }: Readonly<{ message: string; onRetry: () => void }>) { return <div className="mx-4 mt-3 rounded-xl border border-amber-300/20 bg-amber-300/8 px-3 py-2.5 text-xs text-amber-100" role="alert"><p>{message}</p><button className="mt-2 font-bold text-amber-200 underline underline-offset-2" onClick={onRetry} type="button">Retry connection</button></div>; }
 function ListSkeleton() { return <div className="space-y-2 p-4" aria-label="Loading conversations" role="status">{[1, 2, 3].map((item) => <div className="flex animate-pulse items-center gap-3 py-2" key={item}><span className="size-11 rounded-full bg-white/5" /><span className="flex-1"><span className="block h-3 w-2/5 rounded bg-white/5" /><span className="mt-2 block h-2.5 w-3/4 rounded bg-white/[0.035]" /></span></div>)}</div>; }
 function formatShortTime(value: string): string { const date = new Date(value); const now = new Date(); if (date.toDateString() === now.toDateString()) return new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(date); return new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric" }).format(date); }
 function getErrorMessage(error: unknown): string { return error instanceof ApiError ? error.message : "Something went wrong. Please try again."; }

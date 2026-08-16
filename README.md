@@ -23,6 +23,10 @@ cd front && npm install
 cd ../back && npm install
 ```
 
+Edit `back/.env` before starting. `JWT_SECRET` must contain at least 32 characters; `CLIENT_URL` must be the exact HTTP(S) client origin. The server validates configuration at startup and exits on invalid values.
+
+SQLite initializes automatically on first server start. The default database is `back/data/chat.db`; schema migrations are repeatable and preserve existing data. Never commit `.env` files or database files.
+
 ## Development
 
 Run each application in a separate terminal:
@@ -41,6 +45,22 @@ The client runs at `http://localhost:3000`. The API and Socket.IO server run at 
 
 ## Verification
 
-Run `npm run lint`, `npm run typecheck`, and `npm run build` inside both `front/` and `back/` before completing a feature.
+Run these commands inside both `front/` and `back/`:
+
+```bash
+npm run lint       # code-quality checks
+npm run typecheck  # strict TypeScript validation
+npm test           # Vitest client tests or Node backend integration tests
+npm run build      # production compilation
+npm audit --omit=dev
+```
+
+Backend tests use isolated in-memory databases and temporary local Socket.IO servers. The API protects authentication and search with IP rate limits, limits message creation per user, returns request IDs, and emits structured JSON request logs without request bodies or authorization headers.
+
+## Production
+
+Build each application, then run `npm start` in separate processes. Set `CLIENT_URL` to the deployed client origin, use a unique high-entropy `JWT_SECRET`, and store `DATABASE_PATH` on persistent storage with restricted permissions. Terminate TLS at a trusted reverse proxy and forward only one trusted proxy hop.
+
+The current sandbox cannot complete the frontend Next.js production build because Turbopack is denied an internal worker port; its webpack fallback has a Next.js 16.3.1 TypeScript configuration parsing issue. Frontend development compilation, ESLint, strict TypeScript, and Vitest remain the available checks in this environment.
 
 Project requirements and workflow are documented in `docs/`.

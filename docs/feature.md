@@ -96,7 +96,7 @@ Allow users to manage their identity and session.
 
 ## Feature 8: Quality, Security, and Release Readiness
 
-**Status:** Active
+**Status:** Complete
 
 Prepare the application for reliable use.
 

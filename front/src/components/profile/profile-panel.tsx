@@ -93,7 +93,7 @@ export function ProfilePanel({ onClose, user }: Readonly<{ onClose: () => void; 
       <section aria-labelledby="profile-title" aria-modal="true" className="profile-panel max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl overflow-y-auto rounded-3xl border border-white/10 bg-[#0b1220] p-5 shadow-2xl shadow-black/50 sm:max-h-[calc(100dvh-3rem)] sm:p-7" role="dialog">
         <header className="flex items-start justify-between gap-4">
           <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-teal-300">Account</p><h2 className="mt-1 text-2xl font-semibold" id="profile-title">Your profile</h2><p className="mt-1 text-sm text-slate-500">Update how people see you in EchoLine.</p></div>
-          <button aria-label="Close profile" className="grid size-10 place-items-center rounded-xl text-xl text-slate-400 hover:bg-white/5 hover:text-white" onClick={onClose} type="button">×</button>
+          <button aria-label="Close profile" autoFocus className="grid size-10 place-items-center rounded-xl text-xl text-slate-400 hover:bg-white/5 hover:text-white" onClick={onClose} type="button">×</button>
         </header>
 
         <form className="mt-7 space-y-4" onSubmit={handleSave}>

@@ -23,7 +23,12 @@ export async function apiRequest<T>(
   if (options.body) headers.set("Content-Type", "application/json");
   if (token) headers.set("Authorization", `Bearer ${token}`);
 
-  const response = await fetch(`${apiUrl}${path}`, { ...options, headers });
+  let response: Response;
+  try {
+    response = await fetch(`${apiUrl}${path}`, { ...options, headers });
+  } catch {
+    throw new ApiError("The server is unavailable. Check your connection and try again.", 0, "API_UNAVAILABLE");
+  }
   if (!response.ok) {
     const body = (await response.json().catch(() => null)) as ApiErrorResponse | null;
     throw new ApiError(

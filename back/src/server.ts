@@ -1,13 +1,14 @@
 import { createServer } from "node:http";
 
 import { createApp } from "./app.js";
-import { env } from "./config/env.js";
+import { loadEnvironment } from "./config/env.js";
 import { createDatabase } from "./database/database.js";
 import { AuthService } from "./modules/auth/auth.service.js";
 import { UserRepository } from "./modules/auth/user.repository.js";
 import { ConversationRepository } from "./modules/conversations/conversation.repository.js";
 import { createSocketServer } from "./socket/socket.js";
 
+const env = loadEnvironment(process.env);
 const database = createDatabase(env.databasePath);
 const authService = new AuthService(new UserRepository(database), env.jwtSecret);
 const conversations = new ConversationRepository(database);

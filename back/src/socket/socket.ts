@@ -25,12 +25,15 @@ export function createSocketServer(
     clientUrl: string;
     authService: AuthService;
     conversations: ConversationRepository;
+    messageRateLimit?: { limit: number; windowMs: number };
   },
 ): Server {
   const io = new Server(httpServer, {
     cors: { origin: options.clientUrl, credentials: true },
   });
   const onlineUsers = new Map<string, number>();
+  const messageLimits = new Map<string, { count: number; resetAt: number }>();
+  const messageRateLimit = options.messageRateLimit ?? { limit: 30, windowMs: 10_000 };
 
   io.use((socket, next) => {
     try {
@@ -73,6 +76,16 @@ export function createSocketServer(
     socket.on("message:send", (input: SendInput, acknowledge?: Ack) => {
       try {
         requireActiveUser();
+        const now = Date.now();
+        const previousLimit = messageLimits.get(user.id);
+        const currentLimit = !previousLimit || previousLimit.resetAt <= now
+          ? { count: 0, resetAt: now + messageRateLimit.windowMs }
+          : previousLimit;
+        currentLimit.count += 1;
+        messageLimits.set(user.id, currentLimit);
+        if (currentLimit.count > messageRateLimit.limit) {
+          throw new HttpError(429, "RATE_LIMITED", "Too many messages. Please slow down");
+        }
         if (typeof input.conversationId !== "string" || typeof input.content !== "string") {
           throw new HttpError(400, "VALIDATION_ERROR", "Invalid message payload");
         }

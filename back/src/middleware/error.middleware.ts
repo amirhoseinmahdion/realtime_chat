@@ -13,7 +13,17 @@ export const errorHandler: ErrorRequestHandler = (error, _request, response, _ne
     return;
   }
 
-  console.error(error);
+  if (error instanceof SyntaxError && "body" in error) {
+    response.status(400).json({ error: { code: "INVALID_JSON", message: "Request body must contain valid JSON" } });
+    return;
+  }
+
+  if (typeof error === "object" && error && "type" in error && error.type === "entity.too.large") {
+    response.status(413).json({ error: { code: "PAYLOAD_TOO_LARGE", message: "Request body is too large" } });
+    return;
+  }
+
+  console.error(JSON.stringify({ level: "error", event: "unhandled_error", requestId: response.getHeader("X-Request-Id") }));
   response.status(500).json({
     error: { code: "INTERNAL_SERVER_ERROR", message: "An unexpected error occurred" },
   });

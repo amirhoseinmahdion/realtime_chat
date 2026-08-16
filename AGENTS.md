@@ -31,7 +31,7 @@ Use two-space indentation, semicolons, double quotes, and strict TypeScript. Use
 
 ## Testing Guidelines
 
-No automated test framework or coverage threshold is configured yet. New feature work should introduce tests with the selected framework. Name TypeScript tests `*.test.ts` or `*.test.tsx`; place integration tests in `tests/integration/`. Test authentication boundaries, validation, conversation membership, message persistence, and failure states. Until test scripts exist, lint, type-check, build, and manually exercise affected HTTP or UI flows.
+The frontend uses Vitest for `src/**/*.test.ts`; the backend uses Node's test runner with Supertest and Socket.IO clients in `back/tests/*.test.ts`. Run `npm test` in each application. No coverage threshold is configured. Test authentication boundaries, validation, rate limits, conversation membership, message persistence, and recovery states. Always run lint and strict type checking alongside tests.
 
 ## Commit & Pull Request Guidelines
 

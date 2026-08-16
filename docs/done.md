@@ -35,6 +35,28 @@ This file records project phases that have been implemented and verified. Planne
 
 ## Completed Features
 
+## 2026-08-16 — Feature 8: Quality, Security, and Release Readiness
+
+**Status:** Complete
+
+### Delivered
+
+- Added strict environment validation, defensive HTTP headers, request IDs, structured JSON request/error logs, and safe malformed-body responses.
+- Added dependency-free IP throttling for authentication and search plus per-user Socket.IO message throttling, with retry metadata and documented Swagger responses.
+- Normalized client network failures and added a visible chat recovery action; improved dialog focus and completed a React accessibility/quality review.
+- Expanded contributor documentation for setup, automatic SQLite initialization, verification, production configuration, and known build constraints.
+
+### Verified
+
+- Backend lint, strict TypeScript, production build, 20 integration tests, and production dependency audit passed with zero known vulnerabilities.
+- Frontend lint, strict TypeScript, eight Vitest tests, and production dependency audit passed with zero known vulnerabilities.
+- Integration tests exercise authentication, conversations, messaging, profiles, invalidated sessions, configuration, headers, safe errors, and all new rate limits.
+
+### Notes
+
+- Visual browser automation remains unavailable because `agent-browser` is not installed.
+- The Next.js production build remains blocked by the documented sandbox/Turbopack and webpack fallback issues; development compilation and standalone frontend checks pass.
+
 ## 2026-08-16 — Feature 7: Profile and Account Management
 
 **Status:** Complete

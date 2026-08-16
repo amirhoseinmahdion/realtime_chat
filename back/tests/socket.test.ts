@@ -44,6 +44,7 @@ describe("real-time messaging", () => {
       clientUrl: "http://localhost:3000",
       authService,
       conversations,
+      messageRateLimit: { limit: 1, windowMs: 60_000 },
     });
     await new Promise<void>((resolve) => httpServer.listen(0, "127.0.0.1", resolve));
     const address = httpServer.address();
@@ -86,6 +87,16 @@ describe("real-time messaging", () => {
     const socket = createClient(baseUrl, { auth: {}, reconnection: false });
     const error = await new Promise<Error>((resolve) => socket.once("connect_error", resolve));
     assert.equal(error.message, "UNAUTHORIZED");
+    socket.disconnect();
+  });
+
+  it("rate-limits message creation", async () => {
+    const socket = await connect(baseUrl, blair.token);
+    const first = await emitAck(socket, "message:send", { conversationId, content: "Allowed" });
+    const limited = await emitAck(socket, "message:send", { conversationId, content: "Too fast" });
+    assert.equal(first.ok, true);
+    assert.equal(limited.ok, false);
+    assert.equal(limited.code, "RATE_LIMITED");
     socket.disconnect();
   });
 

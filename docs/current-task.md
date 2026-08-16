@@ -1,34 +1,32 @@
-# Current Task: Feature 8 — Quality, Security, and Release Readiness
+# Current Task: Roadmap Complete
 
-**Status:** Active
+**Status:** Complete
 
 ## Goal
 
-Prepare EchoLine for reliable use with stronger API protections, startup validation, diagnostics, accessibility checks, and complete setup documentation.
+All eight planned project features are implemented and verified. Select a Future Enhancement from `docs/feature.md` and convert it into a new testable current task before beginning more implementation.
 
-## Security and Reliability
+## Completed Release Checks
 
-- [ ] Validate all required environment variables during server startup.
-- [ ] Rate-limit authentication, user search, and message creation.
-- [ ] Add centralized structured request and error logging without exposing secrets.
-- [ ] Review safe error responses and security-sensitive HTTP defaults.
+- [x] Validate all required environment variables during server startup.
+- [x] Rate-limit authentication, user search, and message creation.
+- [x] Add centralized structured request and error logging without exposing secrets.
+- [x] Review safe error responses and security-sensitive HTTP defaults.
+- [x] Add backend integration coverage for configuration, limits, headers, and errors.
+- [x] Expand frontend tests for network failure and safe API error behavior.
+- [x] Audit labels, keyboard interactions, focus handling, and responsive layouts.
+- [x] Add user-facing recovery states for unavailable API and Socket.IO connections.
+- [x] Document setup, database initialization, verification, and production commands.
+- [x] Run lint, strict type checks, tests, supported builds, and dependency audits.
+- [x] Exercise signup, authentication, conversations, messaging, and profile APIs through integration tests.
 
-## Quality and Accessibility
+## Next Work
 
-- [ ] Add backend integration coverage for new limits, configuration, and error behavior.
-- [ ] Expand frontend flow tests for authentication, chat, profile, and failure states.
-- [ ] Audit labels, keyboard interactions, focus handling, and responsive layouts.
-- [ ] Add user-facing recovery states for unavailable API and Socket.IO connections.
-
-## Documentation and Release Verification
-
-- [ ] Document installation, environment setup, database initialization, testing, and production commands.
-- [ ] Run frontend and backend lint, strict type checks, tests, builds where supported, and dependency audits.
-- [ ] Exercise the complete signup-to-chat-to-profile flow and record known environment limitations.
+- [ ] Choose and plan one Future Enhancement; do not implement directly from the backlog.
 
 ## Completion Criteria
 
-Feature 8 is complete when security controls are tested, operational failures are diagnosable, core flows are accessible, and a new contributor can configure, verify, and build the application from the documentation.
+The planned roadmap is complete. New work begins only after a Future Enhancement is promoted into a focused current task.
 
 ## Notes and Blockers
 
