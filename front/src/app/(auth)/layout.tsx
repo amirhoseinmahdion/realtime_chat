@@ -44,9 +44,15 @@ export default function AuthLayout({ children }: Readonly<{ children: ReactNode 
         <div className="flex flex-1 items-center justify-center py-10">
           <div className="animate-fade-up w-full max-w-[440px]">{children}</div>
         </div>
-        <p className="text-center text-xs leading-5 text-slate-600">
-          By continuing, you agree to keep conversations respectful.
-        </p>
+        <div className="text-center text-xs leading-5 text-slate-600">
+          <p>By continuing, you agree to keep conversations respectful.</p>
+          <p className="mt-1.5">
+            Developed by{" "}
+            <a className="font-semibold text-teal-300 transition hover:text-teal-200 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300" href="https://github.com/amirhoseinmahdion" rel="noreferrer" target="_blank">
+              Amirhosein Mahdiyon
+            </a>
+          </p>
+        </div>
       </section>
     </main>
   );
