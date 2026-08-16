@@ -12,8 +12,8 @@ export function validateProfile(input: ProfileInput): string | null {
   if (input.bio.trim().length > 160) return "Biography must be at most 160 characters.";
   if (input.avatarUrl) {
     if (input.avatarUrl.startsWith("data:")) {
-      if (!/^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/]+={0,2}$/.test(input.avatarUrl) || input.avatarUrl.length > 263_000) {
-        return "Avatar must be a valid PNG, JPG, WebP, or GIF smaller than 192 KB.";
+      if (!/^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/]+={0,2}$/.test(input.avatarUrl) || input.avatarUrl.length > 684_000) {
+        return "Avatar must be a valid PNG, JPG, WebP, or GIF smaller than 500 KB.";
       }
       return null;
     }

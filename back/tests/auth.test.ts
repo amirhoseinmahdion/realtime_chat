@@ -143,6 +143,22 @@ describe("authentication API", () => {
       .set("Authorization", `Bearer ${first.body.token as string}`)
       .send({ username: "conflict_one", displayName: "", bio: "", avatarUrl: "javascript:alert(1)" });
     assert.equal(invalid.status, 400);
+
+    const oversizedAvatar = `data:image/png;base64,${Buffer.concat([
+      Buffer.from([0x89, 0x50, 0x4e, 0x47]),
+      Buffer.alloc(500 * 1024),
+    ]).toString("base64")}`;
+    const oversized = await request(app)
+      .patch("/api/users/me")
+      .set("Authorization", `Bearer ${first.body.token as string}`)
+      .send({
+        username: "conflict_one",
+        displayName: "Valid",
+        bio: "",
+        avatarUrl: oversizedAvatar,
+      });
+    assert.equal(oversized.status, 400);
+    assert.match(oversized.body.error.message, /500 KB/);
   });
 
   it("requires confirmation, anonymizes history, and prevents login after deletion", async () => {

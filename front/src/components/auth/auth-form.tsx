@@ -6,6 +6,7 @@ import { type FormEvent, useEffect, useState } from "react";
 
 import { ApiError } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider";
+import { useLanguage } from "@/providers/language-provider";
 
 type AuthMode = "login" | "signup";
 
@@ -21,6 +22,7 @@ const inputClassName =
 export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
   const router = useRouter();
   const { user, isLoading: isSessionLoading, login, signup } = useAuth();
+  const { t } = useLanguage();
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
@@ -81,21 +83,21 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
     <div>
       <div className="mb-8">
         <p className="mb-2 text-sm font-medium text-teal-300">
-          {isSignup ? "Start chatting today" : "Good to see you again"}
+          {t(isSignup ? "Start chatting today" : "Good to see you again")}
         </p>
         <h2 className="text-3xl font-semibold tracking-[-0.035em] text-white sm:text-4xl">
-          {isSignup ? "Create your Online Chat account" : "Continue to Online Chat"}
+          {t(isSignup ? "Create your Online Chat account" : "Continue to Online Chat")}
         </h2>
         <p className="mt-3 text-sm leading-6 text-slate-400">
           {isSignup
-            ? "Create your profile, find people, and start a conversation in seconds."
-            : "Sign in to see your conversations and reconnect with your people."}
+            ? t("Create your profile, find people, and start a conversation in seconds.")
+            : t("Sign in to see your conversations and reconnect with your people.")}
         </p>
       </div>
 
       <form className="space-y-5" noValidate onSubmit={handleSubmit}>
         {isSignup ? (
-          <Field error={errors.displayName} label="Display name" optional>
+          <Field error={errors.displayName} label={t("Display name")} optional optionalLabel={t("Optional")}>
             <input
               autoComplete="name"
               className={inputClassName}
@@ -109,7 +111,7 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
           </Field>
         ) : null}
 
-        <Field error={errors.username} label="Username">
+        <Field error={errors.username} inputId="username" label={t("Username")}>
           <div className="relative">
             <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-sm text-slate-600">@</span>
             <input
@@ -127,7 +129,7 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
           </div>
         </Field>
 
-        <Field error={errors.password} label="Password">
+        <Field error={errors.password} inputId="password" label={t("Password")}>
           <div className="relative">
             <input
               aria-invalid={Boolean(errors.password)}
@@ -145,7 +147,7 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
               onClick={() => setShowPassword((current) => !current)}
               type="button"
             >
-              {showPassword ? "Hide" : "Show"}
+              {t(showPassword ? "Hide" : "Show")}
             </button>
           </div>
         </Field>
@@ -164,32 +166,32 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
           {isSubmitting ? (
             <span className="flex items-center gap-2">
               <span className="size-4 animate-spin rounded-full border-2 border-slate-900/25 border-t-slate-900" />
-              {isSignup ? "Creating account…" : "Signing in…"}
+              {t(isSignup ? "Creating account…" : "Signing in…")}
             </span>
           ) : isSignup ? (
-            "Create account"
+            t("Create account")
           ) : (
-            "Sign in"
+            t("Sign in")
           )}
         </button>
       </form>
 
       <p className="mt-7 text-center text-sm text-slate-500">
-        {isSignup ? "Already have an account?" : "New to Online Chat?"}{" "}
+        {t(isSignup ? "Already have an account?" : "New to Online Chat?")}{" "}
         <Link className="font-semibold text-teal-300 transition hover:text-teal-200 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300" href={isSignup ? "/login" : "/signup"}>
-          {isSignup ? "Sign in" : "Create an account"}
+          {t(isSignup ? "Sign in" : "Create account")}
         </Link>
       </p>
     </div>
   );
 }
 
-function Field({ children, error, label, optional }: Readonly<{ children: React.ReactNode; error?: string; label: string; optional?: boolean }>) {
+function Field({ children, error, inputId, label, optional, optionalLabel }: Readonly<{ children: React.ReactNode; error?: string; inputId?: string; label: string; optional?: boolean; optionalLabel?: string }>) {
   return (
     <div>
-      <label className="mb-2 flex items-center justify-between text-sm font-medium text-slate-200" htmlFor={label === "Display name" ? "displayName" : label.toLowerCase()}>
+      <label className="mb-2 flex items-center justify-between text-sm font-medium text-slate-200" htmlFor={inputId ?? "displayName"}>
         {label}
-        {optional ? <span className="text-xs font-normal text-slate-600">Optional</span> : null}
+        {optional ? <span className="text-xs font-normal text-slate-600">{optionalLabel}</span> : null}
       </label>
       {children}
       {error ? <p className="mt-2 text-xs text-rose-300">{error}</p> : null}

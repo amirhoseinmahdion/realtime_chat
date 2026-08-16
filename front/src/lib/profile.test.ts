@@ -20,6 +20,7 @@ describe("profile validation", () => {
     expect(validateProfile({ ...validProfile, displayName: "" })).toContain("Display name");
     expect(validateProfile({ ...validProfile, bio: "x".repeat(161) })).toContain("Biography");
     expect(validateProfile({ ...validProfile, avatarUrl: "javascript:alert(1)" })).toContain("Avatar URL");
+    expect(validateProfile({ ...validProfile, avatarUrl: `data:image/png;base64,iVBOR${"A".repeat(684_000)}` })).toContain("500 KB");
   });
 
   it("requires the exact destructive confirmation phrase", () => {

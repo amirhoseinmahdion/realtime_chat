@@ -36,7 +36,7 @@ export function createApp(options: AppOptions) {
   app.use(securityHeaders);
   app.use(requestLogger);
   app.use(cors({ origin: options.clientUrl, credentials: true }));
-  app.use(express.json({ limit: "320kb" }));
+  app.use(express.json({ limit: "800kb" }));
 
   app.get("/api/docs.json", (_request, response) => {
     response.status(200).json(openApiDocument);

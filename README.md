@@ -1,6 +1,6 @@
 # Online Chat
 
-A real-time chat application with a Next.js client and an Express/Socket.IO server.
+A real-time chat application with a Next.js client and an Express/Socket.IO server. The interface supports persistent English and Persian preferences with automatic LTR/RTL layout. Profile avatars accept validated PNG, JPEG, WebP, or GIF images up to 500 KB.
 
 ## Requirements
 

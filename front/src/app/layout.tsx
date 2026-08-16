@@ -3,7 +3,9 @@ import type { ReactNode } from "react";
 
 import "./globals.css";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { AuthProvider } from "@/providers/auth-provider";
+import { LanguageProvider } from "@/providers/language-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 
 export const metadata: Metadata = {
@@ -17,15 +19,18 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var p=localStorage.getItem("online-chat:theme:v1")||localStorage.getItem("echoline:theme:v1");document.documentElement.dataset.theme=p==="light"?"light":"dark"}catch(e){document.documentElement.dataset.theme="dark"}})();`,
+            __html: `(function(){try{var p=localStorage.getItem("online-chat:theme:v1")||localStorage.getItem("echoline:theme:v1");var l=localStorage.getItem("online-chat:language:v1")==="fa"?"fa":"en";document.documentElement.dataset.theme=p==="light"?"light":"dark";document.documentElement.lang=l;document.documentElement.dir=l==="fa"?"rtl":"ltr"}catch(e){document.documentElement.dataset.theme="dark"}})();`,
           }}
         />
       </head>
       <body>
-        <ThemeProvider>
-          <AuthProvider>{children}</AuthProvider>
-          <ThemeSwitcher />
-        </ThemeProvider>
+        <LanguageProvider>
+          <ThemeProvider>
+            <AuthProvider>{children}</AuthProvider>
+            <ThemeSwitcher />
+            <LanguageSwitcher />
+          </ThemeProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

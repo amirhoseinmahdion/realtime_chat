@@ -1,8 +1,12 @@
+"use client";
+
 import type { ReactNode } from "react";
 
 import { BrandMark } from "@/components/brand-mark";
+import { useLanguage } from "@/providers/language-provider";
 
 export default function AuthLayout({ children }: Readonly<{ children: ReactNode }>) {
+  const { t } = useLanguage();
   return (
     <main className="auth-page min-h-screen lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)]">
       <section className="auth-aside relative hidden min-h-screen overflow-hidden border-r border-white/8 px-12 py-10 lg:flex lg:flex-col">
@@ -10,19 +14,19 @@ export default function AuthLayout({ children }: Readonly<{ children: ReactNode 
         <div className="absolute -left-20 top-1/4 size-96 rounded-full bg-indigo-500/10 blur-3xl" />
         <div className="absolute -right-24 bottom-10 size-80 rounded-full bg-sky-400/8 blur-3xl" />
         <div className="relative flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3"><BrandMark /><span className="text-lg font-semibold tracking-tight">Online Chat</span></div>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">Live conversations</span>
+          <div className="flex items-center gap-3"><BrandMark /><span className="text-lg font-semibold tracking-tight">{t("Online Chat")}</span></div>
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">{t("Live conversations")}</span>
         </div>
 
         <div className="relative my-auto grid items-center gap-10 xl:grid-cols-[1.05fr_.95fr]">
           <div>
-            <p className="mb-5 text-xs font-bold uppercase tracking-[0.28em] text-teal-300">Simple. Fast. Together.</p>
-            <h1 className="max-w-xl text-5xl font-semibold leading-[1.06] tracking-[-0.045em] text-white xl:text-6xl">Your people are only one message away.</h1>
-            <p className="mt-7 max-w-lg text-lg leading-8 text-slate-400">Search, connect, and continue every conversation in a focused space built for real-time chat.</p>
+            <p className="mb-5 text-xs font-bold uppercase tracking-[0.28em] text-teal-300">{t("Simple. Fast. Together.")}</p>
+            <h1 className="max-w-xl text-5xl font-semibold leading-[1.06] tracking-[-0.045em] text-white xl:text-6xl">{t("Your people are only one message away.")}</h1>
+            <p className="mt-7 max-w-lg text-lg leading-8 text-slate-400">{t("Search, connect, and continue every conversation in a focused space built for real-time chat.")}</p>
             <div className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-300">
-              <span className="flex items-center gap-2"><span className="size-2 rounded-full bg-teal-300" />Instant delivery</span>
-              <span className="flex items-center gap-2"><span className="size-2 rounded-full bg-sky-400" />Live presence</span>
-              <span className="flex items-center gap-2"><span className="size-2 rounded-full bg-indigo-400" />Conversation history</span>
+              <span className="flex items-center gap-2"><span className="size-2 rounded-full bg-teal-300" />{t("Instant delivery")}</span>
+              <span className="flex items-center gap-2"><span className="size-2 rounded-full bg-sky-400" />{t("Live presence")}</span>
+              <span className="flex items-center gap-2"><span className="size-2 rounded-full bg-indigo-400" />{t("Conversation history")}</span>
             </div>
           </div>
 
@@ -33,13 +37,13 @@ export default function AuthLayout({ children }: Readonly<{ children: ReactNode 
           </div>
         </div>
 
-        <p className="relative text-xs text-slate-600">Private by design. Ready whenever you are.</p>
+        <p className="relative text-xs text-slate-600">{t("Private by design. Ready whenever you are.")}</p>
       </section>
 
       <section className="auth-main flex min-h-screen flex-col px-5 py-6 sm:px-10 lg:px-14 xl:px-20">
         <div className="flex items-center gap-3 lg:hidden">
           <BrandMark />
-          <span className="text-lg font-semibold tracking-tight">Online Chat</span>
+          <span className="text-lg font-semibold tracking-tight">{t("Online Chat")}</span>
         </div>
         <div className="flex flex-1 items-center justify-center py-10">
           <div className="animate-fade-up w-full max-w-[440px]">{children}</div>
@@ -47,7 +51,7 @@ export default function AuthLayout({ children }: Readonly<{ children: ReactNode 
         <div className="text-center text-xs leading-5 text-slate-600">
           <p>By continuing, you agree to keep conversations respectful.</p>
           <p className="mt-1.5">
-            Developed by{" "}
+            {t("Developed by")}{" "}
             <a className="font-semibold text-teal-300 transition hover:text-teal-200 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300" href="https://github.com/amirhoseinmahdion" rel="noreferrer" target="_blank">
               Amirhosein Mahdiyon
             </a>
