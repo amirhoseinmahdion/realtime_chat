@@ -34,4 +34,9 @@ describe("authentication translations", () => {
     expect(translate("online now", "fa")).toBe("اکنون آنلاین است");
     expect(translate("Delivered just now", "fa")).toBe("همین حالا تحویل شد");
   });
+
+  it("translates the username placeholder while preserving its character guidance", () => {
+    expect(translate("your_username", "fa")).toBe("نام_کاربری_انگلیسی");
+    expect(translate("your_username", "en")).toBe("your_username");
+  });
 });

@@ -113,16 +113,16 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
 
         <Field error={errors.username ? t(errors.username) : undefined} inputId="username" label={t("Username")}>
           <div className="relative">
-            <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-sm text-slate-600">@</span>
+            <span className="pointer-events-none absolute inset-y-0 start-4 flex items-center text-sm text-slate-600">@</span>
             <input
               aria-invalid={Boolean(errors.username)}
               autoCapitalize="none"
               autoComplete="username"
-              className={`${inputClassName} pl-8`}
+              className={`${inputClassName} ps-8`}
               disabled={isSubmitting}
               id="username"
               onChange={(event) => setUsername(event.target.value)}
-              placeholder="your_username"
+              placeholder={t("your_username")}
               spellCheck={false}
               value={username}
             />
@@ -134,7 +134,7 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
             <input
               aria-invalid={Boolean(errors.password)}
               autoComplete={isSignup ? "new-password" : "current-password"}
-              className={`${inputClassName} pr-16`}
+              className={`${inputClassName} pe-16`}
               disabled={isSubmitting}
               id="password"
               onChange={(event) => setPassword(event.target.value)}
@@ -143,7 +143,7 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
               value={password}
             />
             <button
-              className="absolute inset-y-0 right-3 px-2 text-xs font-semibold text-slate-500 transition hover:text-slate-200 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300"
+              className="absolute inset-y-0 end-3 px-2 text-xs font-semibold text-slate-500 transition hover:text-slate-200 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300"
               onClick={() => setShowPassword((current) => !current)}
               type="button"
             >

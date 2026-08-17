@@ -140,3 +140,9 @@ Place the theme and language controls together at the top-right and prevent unkn
 **Status:** Complete
 
 Use direction-aware preference positioning and translate all remaining supporting copy on the Persian authentication pages.
+
+## Enhancement: Persian Authentication Field UX
+
+**Status:** Active
+
+Localize the username hint and make username/password field adornments and spacing direction-aware.

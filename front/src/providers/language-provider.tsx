@@ -49,6 +49,7 @@ const persian: Record<string, string> = {
   "How people will see you": "نامی که دیگران می‌بینند",
   "At least 8 characters": "حداقل ۸ نویسه",
   "Your password": "رمز عبور شما",
+  "your_username": "نام_کاربری_انگلیسی",
   "Use 3–30 letters, numbers, or underscores.": "از ۳ تا ۳۰ حرف انگلیسی، عدد یا زیرخط استفاده کنید.",
   "Password must be between 8 and 72 characters.": "رمز عبور باید بین ۸ تا ۷۲ نویسه باشد.",
   "Display name must be 50 characters or fewer.": "نام نمایشی باید حداکثر ۵۰ نویسه باشد.",
