@@ -68,6 +68,11 @@ export function translate(text: string, language: Language): string {
   return language === "fa" ? persian[text] ?? text : text;
 }
 
+export function translateAuthError(text: string, language: Language): string {
+  if (language === "en") return text;
+  return persian[text] ?? persian["Something went wrong. Try again."];
+}
+
 interface LanguageContextValue {
   language: Language;
   setLanguage: (language: Language) => void;

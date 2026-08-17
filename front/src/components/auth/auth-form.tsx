@@ -6,7 +6,7 @@ import { type FormEvent, useEffect, useState } from "react";
 
 import { ApiError } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider";
-import { useLanguage } from "@/providers/language-provider";
+import { translateAuthError, useLanguage } from "@/providers/language-provider";
 
 type AuthMode = "login" | "signup";
 
@@ -22,7 +22,7 @@ const inputClassName =
 export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
   const router = useRouter();
   const { user, isLoading: isSessionLoading, login, signup } = useAuth();
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
@@ -154,7 +154,7 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
 
         {serverError ? (
           <div aria-live="polite" className="rounded-xl border border-rose-400/20 bg-rose-400/8 px-4 py-3 text-sm leading-5 text-rose-300" role="alert">
-            {t(serverError)}
+            {translateAuthError(serverError, language)}
           </div>
         ) : null}
 

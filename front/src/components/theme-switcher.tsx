@@ -11,7 +11,7 @@ export function ThemeSwitcher() {
   return (
     <button
       aria-label={t(nextTheme === "light" ? "Switch to light theme" : "Switch to dark theme")}
-      className="preference-button fixed bottom-4 right-4 z-50"
+      className="preference-button fixed right-4 top-4 z-50"
       onClick={() => setPreference(nextTheme)}
       title={t(nextTheme === "light" ? "Switch to light theme" : "Switch to dark theme")}
       type="button"

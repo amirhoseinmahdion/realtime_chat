@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { translate } from "./language-provider";
+import { translate, translateAuthError } from "./language-provider";
 
 describe("authentication translations", () => {
   it("translates client-side validation errors into Persian", () => {
@@ -20,5 +20,10 @@ describe("authentication translations", () => {
   it("keeps English text in English mode and safely falls back for unknown text", () => {
     expect(translate("Invalid username or password", "en")).toBe("Invalid username or password");
     expect(translate("Unknown error", "fa")).toBe("Unknown error");
+  });
+
+  it("never exposes an unknown English authentication error in Persian mode", () => {
+    expect(translateAuthError("An unfamiliar server error", "fa")).toBe("مشکلی پیش آمد. دوباره تلاش کنید.");
+    expect(translateAuthError("An unfamiliar server error", "en")).toBe("An unfamiliar server error");
   });
 });

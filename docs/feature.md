@@ -128,3 +128,9 @@ Deploy the client to Vercel and the Express/Socket.IO service to Render for temp
 **Status:** Complete
 
 Keep theme and language controls available throughout the app and localize login/signup validation and server feedback when Persian is selected.
+
+## Enhancement: Preference Control Location and Persian Error Fallback
+
+**Status:** Active
+
+Place the theme and language controls together at the top-right and prevent unknown English authentication errors from appearing in Persian mode.
