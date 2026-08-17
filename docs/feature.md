@@ -137,6 +137,6 @@ Place the theme and language controls together at the top-right and prevent unkn
 
 ## Enhancement: RTL Authentication Layout Completion
 
-**Status:** Active
+**Status:** Complete
 
 Use direction-aware preference positioning and translate all remaining supporting copy on the Persian authentication pages.

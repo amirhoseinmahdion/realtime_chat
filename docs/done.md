@@ -35,6 +35,27 @@ This file records project phases that have been implemented and verified. Planne
 
 ## Completed Features
 
+## 2026-08-17 — Enhancement: RTL Authentication Layout Completion
+
+**Status:** Complete
+
+### Delivered
+
+- Made the top preference controls direction-aware: top-right in English and top-left in Persian, avoiding the RTL authentication brand.
+- Translated the respectful-conversation footer, chat-preview accessibility label, presence, messages, delivery status, and composer hint.
+- Replaced remaining physical alignment utilities in the authentication preview with logical RTL-aware equivalents.
+
+### Verified
+
+- Frontend lint and strict TypeScript checks passed.
+- All 13 frontend tests passed.
+- Vercel production build passed and deployment `dpl_HDdDZmYgdyecrcApz9zGjkAdLGH1` is Ready.
+- The production login alias returned HTTP 200 with a fresh deployment cache.
+
+### Notes
+
+- Commit `3add35e` remains local until GitHub authentication is configured; the exact committed frontend was deployed directly to Vercel.
+
 ## 2026-08-17 — Enhancement: Preference Control Location and Persian Error Fallback
 
 **Status:** Complete

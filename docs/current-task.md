@@ -1,6 +1,6 @@
 # Current Task: RTL Authentication Layout Completion
 
-**Status:** Active
+**Status:** Complete
 
 ## Goal
 
@@ -8,11 +8,11 @@ Prevent the preference controls from overlapping authentication branding in Pers
 
 ## Steps
 
-- [ ] Use logical positioning so preference controls move to the top-left in Persian RTL mode.
-- [ ] Translate the respectful-conversation footer and preview text.
-- [ ] Add automated coverage for the remaining Persian copy.
-- [ ] Run frontend lint, strict type checking, tests, and production build.
-- [ ] Commit, deploy, and verify the hosted login page.
+- [x] Use logical positioning so preference controls move to the top-left in Persian RTL mode.
+- [x] Translate the respectful-conversation footer and preview text.
+- [x] Add automated coverage for the remaining Persian copy.
+- [x] Run frontend lint, strict type checking, tests, and production build.
+- [x] Commit, deploy, and verify the hosted login page.
 
 ## Completion Criteria
 
@@ -20,4 +20,5 @@ Preference controls do not overlap the brand in either direction, and authentica
 
 ## Notes and Blockers
 
-- None.
+- Commit `3add35e` contains the implementation locally; GitHub HTTPS credentials remain unavailable in this terminal.
+- Vercel deployment `dpl_HDdDZmYgdyecrcApz9zGjkAdLGH1` is Ready and assigned to the production alias.
