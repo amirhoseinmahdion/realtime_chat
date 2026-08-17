@@ -146,7 +146,7 @@ describe("authentication API", () => {
 
     const oversizedAvatar = `data:image/png;base64,${Buffer.concat([
       Buffer.from([0x89, 0x50, 0x4e, 0x47]),
-      Buffer.alloc(500 * 1024),
+      Buffer.alloc(2 * 1024 * 1024),
     ]).toString("base64")}`;
     const oversized = await request(app)
       .patch("/api/users/me")
@@ -158,7 +158,7 @@ describe("authentication API", () => {
         avatarUrl: oversizedAvatar,
       });
     assert.equal(oversized.status, 400);
-    assert.match(oversized.body.error.message, /500 KB/);
+    assert.match(oversized.body.error.message, /2 MB/);
   });
 
   it("requires confirmation, anonymizes history, and prevents login after deletion", async () => {

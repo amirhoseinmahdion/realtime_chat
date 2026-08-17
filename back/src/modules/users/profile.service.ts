@@ -28,8 +28,8 @@ function avatarUrl(value: unknown): string | null {
     const imageType = match?.[1];
     const payload = match?.[2];
     const bytes = payload ? Buffer.from(payload, "base64") : null;
-    if (!imageType || !bytes || bytes.length > 500 * 1024 || !hasImageSignature(imageType, bytes)) {
-      throw new HttpError(400, "VALIDATION_ERROR", "Avatar must be a valid image smaller than 500 KB");
+    if (!imageType || !bytes || bytes.length > 2 * 1024 * 1024 || !hasImageSignature(imageType, bytes)) {
+      throw new HttpError(400, "VALIDATION_ERROR", "Avatar must be a valid image no larger than 2 MB");
     }
     return value;
   }

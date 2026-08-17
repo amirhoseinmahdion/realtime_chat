@@ -2,11 +2,12 @@ import type { ProfileInput } from "@/providers/auth-provider";
 
 const usernamePattern = /^[a-z0-9_]{3,30}$/;
 const avatarTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
-const maxAvatarBytes = 500 * 1024;
+const maxAvatarBytes = 2 * 1024 * 1024;
+const maxAvatarDataUrlLength = 2_796_230;
 
 export function validateAvatarFile(file: Pick<File, "size" | "type">): string | null {
   if (!avatarTypes.has(file.type)) return "Choose a PNG, JPG, WebP, or GIF image.";
-  if (file.size > maxAvatarBytes) return "Avatar images must be smaller than 500 KB.";
+  if (file.size > maxAvatarBytes) return "Avatar images must be 2 MB or smaller.";
   return null;
 }
 
@@ -20,8 +21,8 @@ export function validateProfile(input: ProfileInput): string | null {
   if (input.bio.trim().length > 160) return "Biography must be at most 160 characters.";
   if (input.avatarUrl) {
     if (input.avatarUrl.startsWith("data:")) {
-      if (!/^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/]+={0,2}$/.test(input.avatarUrl) || input.avatarUrl.length > 684_000) {
-        return "Avatar must be a valid PNG, JPG, WebP, or GIF smaller than 500 KB.";
+      if (!/^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/]+={0,2}$/.test(input.avatarUrl) || input.avatarUrl.length > maxAvatarDataUrlLength) {
+        return "Avatar must be a valid PNG, JPG, WebP, or GIF no larger than 2 MB.";
       }
       return null;
     }

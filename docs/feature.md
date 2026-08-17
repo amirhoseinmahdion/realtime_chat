@@ -158,3 +158,9 @@ Configure the Vercel production bundle with the hosted Render HTTP API and Socke
 **Status:** Complete
 
 Clarify profile image upload and require an accessible confirmation dialog before logout.
+
+## Enhancement: Increase Profile Image Limit
+
+**Status:** Active
+
+Increase validated profile image uploads from 500 KB to 2 MB across the frontend and backend.
