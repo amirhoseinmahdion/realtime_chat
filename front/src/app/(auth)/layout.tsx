@@ -30,10 +30,10 @@ export default function AuthLayout({ children }: Readonly<{ children: ReactNode 
             </div>
           </div>
 
-          <div aria-label="Chat preview" className="hidden rounded-[2rem] border border-white/10 bg-slate-950/30 p-4 shadow-2xl shadow-black/20 backdrop-blur-xl xl:block">
-            <div className="flex items-center gap-3 border-b border-white/8 pb-4"><span className="relative grid size-10 place-items-center rounded-full bg-indigo-400/20 text-sm font-bold text-indigo-200">AM<span className="absolute bottom-0 right-0 size-3 rounded-full border-2 border-slate-900 bg-emerald-400" /></span><div><p className="text-sm font-semibold text-white">Alex Morgan</p><p className="text-xs text-emerald-400">online now</p></div></div>
-            <div className="space-y-3 py-5"><div className="max-w-[82%] rounded-2xl rounded-bl-md bg-white/7 px-4 py-3 text-sm leading-5 text-slate-300">Are we still on for the project call?</div><div className="ml-auto max-w-[78%] rounded-2xl rounded-br-md bg-teal-300 px-4 py-3 text-sm font-medium text-slate-950">Absolutely — I’ll send the notes now.</div><p className="pr-2 text-right text-[10px] text-slate-500">Delivered just now</p></div>
-            <div className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.035] px-4 py-3 text-xs text-slate-500"><span className="flex-1">Write a message…</span><span className="grid size-8 place-items-center rounded-xl bg-teal-300 text-slate-950">↗</span></div>
+          <div aria-label={t("Chat preview")} className="hidden rounded-[2rem] border border-white/10 bg-slate-950/30 p-4 shadow-2xl shadow-black/20 backdrop-blur-xl xl:block">
+            <div className="flex items-center gap-3 border-b border-white/8 pb-4"><span className="relative grid size-10 place-items-center rounded-full bg-indigo-400/20 text-sm font-bold text-indigo-200">AM<span className="absolute bottom-0 end-0 size-3 rounded-full border-2 border-slate-900 bg-emerald-400" /></span><div><p className="text-sm font-semibold text-white">Alex Morgan</p><p className="text-xs text-emerald-400">{t("online now")}</p></div></div>
+            <div className="space-y-3 py-5"><div className="max-w-[82%] rounded-2xl rounded-bl-md bg-white/7 px-4 py-3 text-sm leading-5 text-slate-300">{t("Are we still on for the project call?")}</div><div className="ms-auto max-w-[78%] rounded-2xl rounded-br-md bg-teal-300 px-4 py-3 text-sm font-medium text-slate-950">{t("Absolutely — I’ll send the notes now.")}</div><p className="pe-2 text-end text-[10px] text-slate-500">{t("Delivered just now")}</p></div>
+            <div className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.035] px-4 py-3 text-xs text-slate-500"><span className="flex-1">{t("Write a message…")}</span><span className="grid size-8 place-items-center rounded-xl bg-teal-300 text-slate-950">↗</span></div>
           </div>
         </div>
 
@@ -49,7 +49,7 @@ export default function AuthLayout({ children }: Readonly<{ children: ReactNode 
           <div className="animate-fade-up w-full max-w-[440px]">{children}</div>
         </div>
         <div className="text-center text-xs leading-5 text-slate-600">
-          <p>By continuing, you agree to keep conversations respectful.</p>
+          <p>{t("By continuing, you agree to keep conversations respectful.")}</p>
           <p className="mt-1.5">
             {t("Developed by")}{" "}
             <a className="font-semibold text-teal-300 transition hover:text-teal-200 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300" href="https://github.com/amirhoseinmahdion" rel="noreferrer" target="_blank">

@@ -1,24 +1,23 @@
-# Current Task: Preference Control Location and Persian Form Errors
+# Current Task: RTL Authentication Layout Completion
 
-**Status:** Complete
+**Status:** Active
 
 ## Goal
 
-Move the theme and language controls to the top-right of every page and guarantee Persian login/signup error feedback when Persian is selected.
+Prevent the preference controls from overlapping authentication branding in Persian and translate the remaining authentication-page copy.
 
 ## Steps
 
-- [x] Move the theme and language controls from the bottom-right to the top-right.
-- [x] Use a Persian fallback for unknown authentication errors in Persian mode.
-- [x] Add automated coverage for the Persian fallback.
-- [x] Run frontend lint, strict type checking, tests, and production build.
-- [x] Commit, deploy, and verify the hosted login page.
+- [ ] Use logical positioning so preference controls move to the top-left in Persian RTL mode.
+- [ ] Translate the respectful-conversation footer and preview text.
+- [ ] Add automated coverage for the remaining Persian copy.
+- [ ] Run frontend lint, strict type checking, tests, and production build.
+- [ ] Commit, deploy, and verify the hosted login page.
 
 ## Completion Criteria
 
-Theme and language controls appear together at the top-right, and login/signup never show English error feedback while Persian is active.
+Preference controls do not overlap the brand in either direction, and authentication-page supporting text is Persian in Persian mode.
 
 ## Notes and Blockers
 
-- GitHub push remains unavailable in this terminal because HTTPS credentials are not configured; commit `e972201` is local.
-- Vercel production deployment `dpl_4prNPbCdAnProsDh8zkaSspG6Ra4` completed successfully and was assigned to `https://front-self-tau.vercel.app`.
+- None.

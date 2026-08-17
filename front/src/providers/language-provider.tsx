@@ -62,6 +62,12 @@ const persian: Record<string, string> = {
   "We could not complete your request.": "انجام درخواست ممکن نشد.",
   "Something went wrong. Try again.": "مشکلی پیش آمد. دوباره تلاش کنید.",
   "Loading your session": "در حال بارگذاری نشست شما",
+  "By continuing, you agree to keep conversations respectful.": "با ادامه دادن، موافقت می‌کنید که در گفت‌وگوها احترام را رعایت کنید.",
+  "Chat preview": "پیش‌نمایش گفت‌وگو",
+  "online now": "اکنون آنلاین است",
+  "Are we still on for the project call?": "جلسه پروژه همچنان برقرار است؟",
+  "Absolutely — I’ll send the notes now.": "حتماً؛ همین حالا یادداشت‌ها را می‌فرستم.",
+  "Delivered just now": "همین حالا تحویل شد",
 };
 
 export function translate(text: string, language: Language): string {

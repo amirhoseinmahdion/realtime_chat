@@ -8,7 +8,7 @@ export function LanguageSwitcher() {
   return (
     <button
       aria-label={nextLanguage === "fa" ? "تغییر زبان به فارسی" : "Switch language to English"}
-      className="preference-button fixed right-[4.25rem] top-4 z-50"
+      className="preference-button fixed end-[4.25rem] top-4 z-50"
       onClick={() => setLanguage(nextLanguage)}
       title={nextLanguage === "fa" ? "فارسی" : "English"}
       type="button"

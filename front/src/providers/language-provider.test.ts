@@ -26,4 +26,12 @@ describe("authentication translations", () => {
     expect(translateAuthError("An unfamiliar server error", "fa")).toBe("مشکلی پیش آمد. دوباره تلاش کنید.");
     expect(translateAuthError("An unfamiliar server error", "en")).toBe("An unfamiliar server error");
   });
+
+  it("translates the remaining authentication-page supporting copy", () => {
+    expect(translate("By continuing, you agree to keep conversations respectful.", "fa")).toBe(
+      "با ادامه دادن، موافقت می‌کنید که در گفت‌وگوها احترام را رعایت کنید.",
+    );
+    expect(translate("online now", "fa")).toBe("اکنون آنلاین است");
+    expect(translate("Delivered just now", "fa")).toBe("همین حالا تحویل شد");
+  });
 });

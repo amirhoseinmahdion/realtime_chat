@@ -134,3 +134,9 @@ Keep theme and language controls available throughout the app and localize login
 **Status:** Complete
 
 Place the theme and language controls together at the top-right and prevent unknown English authentication errors from appearing in Persian mode.
+
+## Enhancement: RTL Authentication Layout Completion
+
+**Status:** Active
+
+Use direction-aware preference positioning and translate all remaining supporting copy on the Persian authentication pages.
