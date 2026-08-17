@@ -155,6 +155,6 @@ Configure the Vercel production bundle with the hosted Render HTTP API and Socke
 
 ## Enhancement: Profile Image Upload and Logout Confirmation
 
-**Status:** Active
+**Status:** Complete
 
 Clarify profile image upload and require an accessible confirmation dialog before logout.

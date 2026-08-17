@@ -35,6 +35,28 @@ This file records project phases that have been implemented and verified. Planne
 
 ## Completed Features
 
+## 2026-08-17 — Enhancement: Profile Image Upload and Logout Confirmation
+
+**Status:** Complete
+
+### Delivered
+
+- Clarified profile image upload with a localized upload action, immediate preview, repeat-selection support, and explicit save/remove guidance.
+- Preserved PNG, JPEG, WebP, and GIF validation with a 500 KB limit and extracted it into a tested helper.
+- Added an accessible localized logout confirmation dialog with focus, Escape/backdrop cancellation, progress state, and reliable navigation when the API is unavailable.
+
+### Verified
+
+- Frontend lint and strict TypeScript checks passed.
+- All 15 frontend tests passed.
+- React best-practices review passed after the logout resilience correction.
+- Vercel production build passed and deployment `dpl_F5Cxcw46kKdaidPdHkEU16C6iCiv` is Ready.
+- The production chat alias returned HTTP 200 with a fresh deployment cache.
+
+### Notes
+
+- Commit `c5b43a3` remains local until GitHub authentication is configured; the exact committed frontend was deployed directly to Vercel.
+
 ## 2026-08-17 — Enhancement: Hosted Authentication Connectivity
 
 **Status:** Complete
