@@ -131,6 +131,6 @@ Keep theme and language controls available throughout the app and localize login
 
 ## Enhancement: Preference Control Location and Persian Error Fallback
 
-**Status:** Active
+**Status:** Complete
 
 Place the theme and language controls together at the top-right and prevent unknown English authentication errors from appearing in Persian mode.

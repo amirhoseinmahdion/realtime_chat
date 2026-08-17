@@ -35,6 +35,27 @@ This file records project phases that have been implemented and verified. Planne
 
 ## Completed Features
 
+## 2026-08-17 — Enhancement: Preference Control Location and Persian Error Fallback
+
+**Status:** Complete
+
+### Delivered
+
+- Moved the global theme and language controls together from the bottom-right to the top-right.
+- Added a Persian fallback so unknown authentication failures cannot expose English feedback while Persian is selected.
+- Published the corrected frontend directly to the Vercel production alias.
+
+### Verified
+
+- Frontend lint and strict TypeScript checks passed.
+- All 12 frontend tests passed.
+- Vercel production build passed and deployment `dpl_4prNPbCdAnProsDh8zkaSspG6Ra4` is Ready.
+- `https://front-self-tau.vercel.app/login` returned HTTP 200 from the fresh production deployment.
+
+### Notes
+
+- Commit `e972201` could not be pushed from this terminal because GitHub HTTPS credentials are unavailable; Vercel received the exact local committed frontend directly.
+
 ## 2026-08-17 — Enhancement: Theme, Language, and Localized Authentication Errors
 
 **Status:** Complete
