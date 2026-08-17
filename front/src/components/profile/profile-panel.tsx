@@ -4,7 +4,7 @@ import { type FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { ApiError } from "@/lib/api";
-import { isDeletionConfirmed, validateProfile } from "@/lib/profile";
+import { isDeletionConfirmed, validateAvatarFile, validateProfile } from "@/lib/profile";
 import { UserAvatar } from "@/components/user-avatar";
 import { useAuth } from "@/providers/auth-provider";
 import { useLanguage } from "@/providers/language-provider";
@@ -58,19 +58,16 @@ export function ProfilePanel({ onClose, user }: Readonly<{ onClose: () => void; 
 
   function handleAvatarFile(file: File | undefined) {
     if (!file) return;
-    if (!["image/jpeg", "image/png", "image/webp", "image/gif"].includes(file.type)) {
-      setStatus({ kind: "error", message: "Choose a PNG, JPG, WebP, or GIF image." });
-      return;
-    }
-    if (file.size > 500 * 1024) {
-      setStatus({ kind: "error", message: "Avatar images must be smaller than 500 KB." });
+    const validationError = validateAvatarFile(file);
+    if (validationError) {
+      setStatus({ kind: "error", message: validationError });
       return;
     }
     const reader = new FileReader();
     reader.onload = () => {
       if (typeof reader.result === "string") {
         setAvatarUrl(reader.result);
-        setStatus(null);
+        setStatus({ kind: "success", message: "Image selected. Save your profile to upload it." });
       }
     };
     reader.onerror = () => setStatus({ kind: "error", message: "The selected image could not be read." });
@@ -101,12 +98,12 @@ export function ProfilePanel({ onClose, user }: Readonly<{ onClose: () => void; 
         <form className="mt-7 space-y-4" onSubmit={handleSave}>
           <div className="flex items-center gap-5 rounded-2xl border border-white/8 bg-white/[0.025] p-4">
             <UserAvatar name={displayName || username || "User"} size="large" url={avatarUrl || null} />
-            <div className="min-w-0 flex-1"><p className="text-sm font-semibold">{t("Profile photo")}</p><p className="mt-1 text-xs leading-5 text-slate-500">{t("Choose a PNG, JPG, WebP, or GIF image smaller than 500 KB.")}</p><div className="mt-3 flex flex-wrap gap-2"><label className="cursor-pointer rounded-xl bg-teal-300 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-teal-200"><input accept="image/jpeg,image/png,image/webp,image/gif" className="sr-only" onChange={(event) => handleAvatarFile(event.target.files?.[0])} type="file" />{t("Choose image")}</label>{avatarUrl ? <button className="rounded-xl border border-white/10 px-3 py-2 text-xs font-semibold text-slate-400 hover:bg-white/5" onClick={() => setAvatarUrl("")} type="button">{t("Remove")}</button> : null}</div></div>
+            <div className="min-w-0 flex-1"><p className="text-sm font-semibold">{t("Profile photo")}</p><p className="mt-1 text-xs leading-5 text-slate-500">{t("Choose a PNG, JPG, WebP, or GIF image smaller than 500 KB.")}</p><div className="mt-3 flex flex-wrap gap-2"><label className="cursor-pointer rounded-xl bg-teal-300 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-teal-200 focus-within:ring-2 focus-within:ring-teal-200"><input accept="image/jpeg,image/png,image/webp,image/gif" className="sr-only" onChange={(event) => { handleAvatarFile(event.target.files?.[0]); event.target.value = ""; }} type="file" />{t("Upload image")}</label>{avatarUrl ? <button className="rounded-xl border border-white/10 px-3 py-2 text-xs font-semibold text-slate-400 hover:bg-white/5" onClick={() => { setAvatarUrl(""); setStatus({ kind: "success", message: "Image removed. Save your profile to apply this change." }); }} type="button">{t("Remove")}</button> : null}</div></div>
           </div>
           <ProfileField label={t("Username")} maxLength={30} onChange={setUsername} value={username} />
           <ProfileField label={t("Display name")} maxLength={50} onChange={setDisplayName} value={displayName} />
           <label className="block"><span className="mb-2 block text-sm font-medium text-slate-300">{t("Biography")}</span><textarea className="min-h-24 w-full resize-none rounded-xl border border-white/10 bg-white/[0.035] px-3.5 py-3 text-sm outline-none focus:border-teal-300/50" maxLength={160} onChange={(event) => setBio(event.target.value)} value={bio} /><span className="mt-1 block text-right text-xs text-slate-600">{bio.length}/160</span></label>
-          {status ? <p className={`rounded-xl border px-3 py-2.5 text-sm ${status.kind === "error" ? "border-rose-400/25 bg-rose-400/10 text-rose-300" : "border-teal-300/25 bg-teal-300/10 text-teal-200"}`} role={status.kind === "error" ? "alert" : "status"}>{status.message}</p> : null}
+          {status ? <p className={`rounded-xl border px-3 py-2.5 text-sm ${status.kind === "error" ? "border-rose-400/25 bg-rose-400/10 text-rose-300" : "border-teal-300/25 bg-teal-300/10 text-teal-200"}`} role={status.kind === "error" ? "alert" : "status"}>{t(status.message)}</p> : null}
           <button className="h-11 w-full rounded-xl bg-teal-300 text-sm font-bold text-slate-950 transition hover:bg-teal-200 disabled:opacity-50" disabled={isSaving || isDeleting} type="submit">{t(isSaving ? "Saving…" : "Save profile")}</button>
         </form>
 

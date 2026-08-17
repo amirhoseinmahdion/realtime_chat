@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { isDeletionConfirmed, validateProfile } from "./profile";
+import { isDeletionConfirmed, validateAvatarFile, validateProfile } from "./profile";
 
 const validProfile = {
   username: "alex_01",
@@ -10,6 +10,11 @@ const validProfile = {
 };
 
 describe("profile validation", () => {
+  it("accepts supported avatar uploads and rejects invalid type or size", () => {
+    expect(validateAvatarFile({ type: "image/png", size: 500 * 1024 })).toBeNull();
+    expect(validateAvatarFile({ type: "image/svg+xml", size: 100 })).toContain("PNG");
+    expect(validateAvatarFile({ type: "image/jpeg", size: 500 * 1024 + 1 })).toContain("500 KB");
+  });
   it("accepts valid editable profile fields", () => {
     expect(validateProfile(validProfile)).toBeNull();
     expect(validateProfile({ ...validProfile, avatarUrl: "data:image/png;base64,iVBORw0KGgo=" })).toBeNull();

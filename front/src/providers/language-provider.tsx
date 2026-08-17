@@ -27,6 +27,13 @@ const persian: Record<string, string> = {
   "Light": "روشن", "Dark": "تیره", "Color theme": "پوسته رنگی",
   "Your profile": "پروفایل شما", Account: "حساب", "Profile photo": "تصویر پروفایل",
   "Choose image": "انتخاب تصویر", Remove: "حذف", Biography: "درباره من",
+  "Upload image": "بارگذاری تصویر",
+  "Image selected. Save your profile to upload it.": "تصویر انتخاب شد. برای بارگذاری، پروفایل را ذخیره کنید.",
+  "Image removed. Save your profile to apply this change.": "تصویر حذف شد. برای اعمال تغییر، پروفایل را ذخیره کنید.",
+  "Choose a PNG, JPG, WebP, or GIF image.": "یک تصویر PNG، JPG، WebP یا GIF انتخاب کنید.",
+  "Avatar images must be smaller than 500 KB.": "حجم تصویر پروفایل باید کمتر از ۵۰۰ کیلوبایت باشد.",
+  "The selected image could not be read.": "خواندن تصویر انتخاب‌شده ممکن نشد.",
+  "Profile saved. Your other sessions were signed out.": "پروفایل ذخیره شد و نشست‌های دیگر شما خارج شدند.",
   "Save profile": "ذخیره پروفایل", "Saving…": "در حال ذخیره…", "Delete account": "حذف حساب",
   "Permanently delete account": "حذف دائمی حساب", "Deleting…": "در حال حذف…",
   "Search people": "جست‌وجوی کاربران", Messages: "پیام‌ها", People: "کاربران",
@@ -69,6 +76,11 @@ const persian: Record<string, string> = {
   "Are we still on for the project call?": "جلسه پروژه همچنان برقرار است؟",
   "Absolutely — I’ll send the notes now.": "حتماً؛ همین حالا یادداشت‌ها را می‌فرستم.",
   "Delivered just now": "همین حالا تحویل شد",
+  "Sign out?": "از حساب خارج می‌شوید؟",
+  "You will need to sign in again to continue chatting.": "برای ادامه گفت‌وگو باید دوباره وارد حساب شوید.",
+  Cancel: "انصراف",
+  "Confirm sign out": "تأیید خروج",
+  "Signing out…": "در حال خروج…",
 };
 
 export function translate(text: string, language: Language): string {

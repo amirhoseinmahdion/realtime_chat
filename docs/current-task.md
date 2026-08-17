@@ -1,24 +1,23 @@
-# Current Task: Hosted Authentication Connectivity
+# Current Task: Profile Image Upload and Logout Confirmation
 
-**Status:** Complete
+**Status:** Active
 
 ## Goal
 
-Restore signup/login connectivity from the Vercel frontend to the hosted Render API.
+Make profile image upload clear and reliable, and require confirmation before signing a user out.
 
 ## Steps
 
-- [x] Reproduce and inspect the hosted CORS preflight.
-- [x] Verify the Render API allows the exact production frontend origin.
-- [x] Identify the frontend production endpoint configuration failure.
-- [x] Configure production HTTP API and Socket.IO URLs in Vercel.
-- [x] Rebuild, deploy, and verify the signup request path.
+- [ ] Improve the profile image picker with explicit upload and save guidance.
+- [ ] Keep image type and size validation and preview the selected image.
+- [ ] Add an accessible, localized logout confirmation modal.
+- [ ] Add focused tests for image-file validation.
+- [ ] Run frontend checks, commit, deploy, and verify production.
 
 ## Completion Criteria
 
-The production signup page calls the hosted Render API, and browser-style preflight and POST requests return the correct CORS origin.
+Users can select, preview, and save a valid profile image, and logout occurs only after confirmation.
 
 ## Notes and Blockers
 
-- Vercel deployment `dpl_6AvRMDcSniV4Gd3aaLDSgMiSJYNp` is Ready and assigned to the production alias.
-- Render Free may take approximately 30 seconds to wake after inactivity.
+- None.

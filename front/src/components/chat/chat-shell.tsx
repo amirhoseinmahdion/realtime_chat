@@ -36,6 +36,8 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
   const [readMessageId, setReadMessageId] = useState<string | null>(null);
   const [unreadCounts, setUnreadCounts] = useState<Record<string, number>>({});
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const selectedConversation = useMemo(
     () => conversations.find((conversation) => conversation.id === selectedId) ?? null,
@@ -220,8 +222,13 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
   }
 
   async function handleLogout() {
-    await logout();
-    router.replace("/login");
+    setIsLoggingOut(true);
+    try {
+      await logout();
+    } finally {
+      setIsLoggingOut(false);
+      router.replace("/login");
+    }
   }
 
   function updateQuery(value: string) {
@@ -275,7 +282,7 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
     <main className="chat-page h-dvh overflow-hidden bg-[#070b14] p-0 sm:p-3 lg:p-5">
       <div className="chat-frame mx-auto flex h-full max-w-[1500px] overflow-hidden border-white/10 bg-[#0a101c] shadow-2xl shadow-black/30 sm:rounded-3xl sm:border">
         <aside className={`chat-sidebar ${selectedId ? "hidden lg:flex" : "flex"} w-full shrink-0 flex-col border-r border-white/8 bg-[#0b1220] lg:w-[360px] xl:w-[400px]`}>
-          <SidebarHeader currentUser={currentUser} onLogout={handleLogout} onOpenProfile={() => setIsProfileOpen(true)} />
+          <SidebarHeader currentUser={currentUser} onLogout={() => setIsLogoutOpen(true)} onOpenProfile={() => setIsProfileOpen(true)} />
           <div className="border-b border-white/8 px-4 pb-4">
             <SearchBox isSearching={isSearching} onChange={updateQuery} query={query} />
           </div>
@@ -302,7 +309,34 @@ export function ChatShell({ currentUser }: Readonly<{ currentUser: User }>) {
         </section>
       </div>
       {isProfileOpen ? <ProfilePanel onClose={() => setIsProfileOpen(false)} user={currentUser} /> : null}
+      {isLogoutOpen ? <LogoutConfirmation isLoggingOut={isLoggingOut} onCancel={() => setIsLogoutOpen(false)} onConfirm={handleLogout} /> : null}
     </main>
+  );
+}
+
+function LogoutConfirmation({ isLoggingOut, onCancel, onConfirm }: Readonly<{ isLoggingOut: boolean; onCancel: () => void; onConfirm: () => Promise<void> }>) {
+  const { t } = useLanguage();
+
+  useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !isLoggingOut) onCancel();
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [isLoggingOut, onCancel]);
+
+  return (
+    <div className="fixed inset-0 z-[70] grid place-items-center bg-slate-950/75 p-4 backdrop-blur-sm" onMouseDown={(event) => { if (event.target === event.currentTarget && !isLoggingOut) onCancel(); }}>
+      <section aria-describedby="logout-description" aria-labelledby="logout-title" aria-modal="true" className="w-full max-w-sm rounded-3xl border border-white/10 bg-[#0b1220] p-6 shadow-2xl shadow-black/50" role="alertdialog">
+        <div className="mx-auto grid size-12 place-items-center rounded-2xl bg-rose-400/10 text-rose-300"><LogoutIcon /></div>
+        <h2 className="mt-4 text-center text-xl font-semibold text-white" id="logout-title">{t("Sign out?")}</h2>
+        <p className="mt-2 text-center text-sm leading-6 text-slate-400" id="logout-description">{t("You will need to sign in again to continue chatting.")}</p>
+        <div className="mt-6 grid grid-cols-2 gap-3">
+          <button autoFocus className="h-11 rounded-xl border border-white/10 text-sm font-semibold text-slate-300 transition hover:bg-white/5 disabled:opacity-50" disabled={isLoggingOut} onClick={onCancel} type="button">{t("Cancel")}</button>
+          <button className="h-11 rounded-xl bg-rose-500 text-sm font-bold text-white transition hover:bg-rose-400 disabled:opacity-50" disabled={isLoggingOut} onClick={() => void onConfirm()} type="button">{t(isLoggingOut ? "Signing out…" : "Confirm sign out")}</button>
+        </div>
+      </section>
+    </div>
   );
 }
 

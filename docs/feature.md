@@ -152,3 +152,9 @@ Localize the username hint and make username/password field adornments and spaci
 **Status:** Complete
 
 Configure the Vercel production bundle with the hosted Render HTTP API and Socket.IO endpoints and verify CORS connectivity.
+
+## Enhancement: Profile Image Upload and Logout Confirmation
+
+**Status:** Active
+
+Clarify profile image upload and require an accessible confirmation dialog before logout.
