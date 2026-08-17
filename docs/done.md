@@ -35,6 +35,27 @@ This file records project phases that have been implemented and verified. Planne
 
 ## Completed Features
 
+## 2026-08-17 — Enhancement: Persian Authentication Field UX
+
+**Status:** Complete
+
+### Delivered
+
+- Added the Persian username placeholder `نام_کاربری_انگلیسی` to communicate the accepted Latin-character format.
+- Replaced physical username-prefix and password-toggle positioning with direction-aware logical positioning.
+- Replaced physical input padding with logical padding so field text never overlaps `@` or نمایش/پنهان in RTL.
+
+### Verified
+
+- Frontend lint and strict TypeScript checks passed.
+- All 14 frontend tests passed.
+- Vercel production build passed and deployment `dpl_DhvnFFRWQAK7N6wZwtGNPvbtHjbj` is Ready.
+- The production login alias returned HTTP 200 with a fresh deployment cache.
+
+### Notes
+
+- Commit `444680c` remains local until GitHub authentication is configured; the exact committed frontend was deployed directly to Vercel.
+
 ## 2026-08-17 — Enhancement: RTL Authentication Layout Completion
 
 **Status:** Complete

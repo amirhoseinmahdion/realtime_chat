@@ -143,6 +143,6 @@ Use direction-aware preference positioning and translate all remaining supportin
 
 ## Enhancement: Persian Authentication Field UX
 
-**Status:** Active
+**Status:** Complete
 
 Localize the username hint and make username/password field adornments and spacing direction-aware.
