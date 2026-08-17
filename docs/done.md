@@ -35,6 +35,28 @@ This file records project phases that have been implemented and verified. Planne
 
 ## Completed Features
 
+## 2026-08-17 — Enhancement: Theme, Language, and Localized Authentication Errors
+
+**Status:** Complete
+
+### Delivered
+
+- Confirmed that the global persisted theme and language controls are rendered on authentication and application pages.
+- Localized login/signup client validation, known API/network feedback, input hints, and session-loading accessibility text in Persian.
+- Made visible authentication feedback react immediately when the selected language changes.
+- Added focused unit coverage for Persian client-validation and authentication API translations.
+
+### Verified
+
+- `npm run lint` — passed in `front/`.
+- `npm run typecheck` — passed in `front/`.
+- `npm test` — all 11 tests passed in `front/`.
+- `npm run build` — reached Next.js production optimization but remained hung until stopped, matching the existing documented environment limitation.
+
+### Notes
+
+- Unknown server messages fall back to their original text; all currently known login/signup errors are translated.
+
 ## 2026-08-16 — Enhancement: Free Hosted Test Environment
 
 **Status:** Complete

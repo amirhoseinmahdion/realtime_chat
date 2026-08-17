@@ -76,7 +76,7 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
   }
 
   if (isSessionLoading || user) {
-    return <AuthLoading />;
+    return <AuthLoading label={t("Loading your session")} />;
   }
 
   return (
@@ -97,7 +97,7 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
 
       <form className="space-y-5" noValidate onSubmit={handleSubmit}>
         {isSignup ? (
-          <Field error={errors.displayName} label={t("Display name")} optional optionalLabel={t("Optional")}>
+          <Field error={errors.displayName ? t(errors.displayName) : undefined} label={t("Display name")} optional optionalLabel={t("Optional")}>
             <input
               autoComplete="name"
               className={inputClassName}
@@ -105,13 +105,13 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
               id="displayName"
               maxLength={50}
               onChange={(event) => setDisplayName(event.target.value)}
-              placeholder="How people will see you"
+              placeholder={t("How people will see you")}
               value={displayName}
             />
           </Field>
         ) : null}
 
-        <Field error={errors.username} inputId="username" label={t("Username")}>
+        <Field error={errors.username ? t(errors.username) : undefined} inputId="username" label={t("Username")}>
           <div className="relative">
             <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-sm text-slate-600">@</span>
             <input
@@ -129,7 +129,7 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
           </div>
         </Field>
 
-        <Field error={errors.password} inputId="password" label={t("Password")}>
+        <Field error={errors.password ? t(errors.password) : undefined} inputId="password" label={t("Password")}>
           <div className="relative">
             <input
               aria-invalid={Boolean(errors.password)}
@@ -138,7 +138,7 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
               disabled={isSubmitting}
               id="password"
               onChange={(event) => setPassword(event.target.value)}
-              placeholder={isSignup ? "At least 8 characters" : "Your password"}
+              placeholder={t(isSignup ? "At least 8 characters" : "Your password")}
               type={showPassword ? "text" : "password"}
               value={password}
             />
@@ -154,7 +154,7 @@ export function AuthForm({ mode }: Readonly<{ mode: AuthMode }>) {
 
         {serverError ? (
           <div aria-live="polite" className="rounded-xl border border-rose-400/20 bg-rose-400/8 px-4 py-3 text-sm leading-5 text-rose-300" role="alert">
-            {serverError}
+            {t(serverError)}
           </div>
         ) : null}
 
@@ -199,11 +199,11 @@ function Field({ children, error, inputId, label, optional, optionalLabel }: Rea
   );
 }
 
-function AuthLoading() {
+function AuthLoading({ label }: Readonly<{ label: string }>) {
   return (
     <div className="flex min-h-56 items-center justify-center" role="status">
       <span className="size-6 animate-spin rounded-full border-2 border-teal-300/20 border-t-teal-300" />
-      <span className="sr-only">Loading your session</span>
+      <span className="sr-only">{label}</span>
     </div>
   );
 }

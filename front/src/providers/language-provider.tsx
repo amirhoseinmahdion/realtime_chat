@@ -46,7 +46,27 @@ const persian: Record<string, string> = {
   "Your identity will be anonymized. Message history remains for other conversation members. This cannot be undone.": "هویت شما ناشناس می‌شود و تاریخچه پیام‌ها برای دیگران باقی می‌ماند. این کار قابل بازگشت نیست.",
   "Type DELETE to confirm": "برای تأیید DELETE را وارد کنید",
   "Switch to light theme": "تغییر به پوسته روشن", "Switch to dark theme": "تغییر به پوسته تیره",
+  "How people will see you": "نامی که دیگران می‌بینند",
+  "At least 8 characters": "حداقل ۸ نویسه",
+  "Your password": "رمز عبور شما",
+  "Use 3–30 letters, numbers, or underscores.": "از ۳ تا ۳۰ حرف انگلیسی، عدد یا زیرخط استفاده کنید.",
+  "Password must be between 8 and 72 characters.": "رمز عبور باید بین ۸ تا ۷۲ نویسه باشد.",
+  "Display name must be 50 characters or fewer.": "نام نمایشی باید حداکثر ۵۰ نویسه باشد.",
+  "Username is required": "نام کاربری الزامی است.",
+  "Username must be 3-30 characters using letters, numbers, or underscores": "نام کاربری باید ۳ تا ۳۰ نویسه و شامل حروف انگلیسی، عدد یا زیرخط باشد.",
+  "Password must be 8-72 characters": "رمز عبور باید بین ۸ تا ۷۲ نویسه باشد.",
+  "Username is already in use": "این نام کاربری قبلاً استفاده شده است.",
+  "Invalid username or password": "نام کاربری یا رمز عبور نادرست است.",
+  "Too many requests. Please try again later.": "تعداد درخواست‌ها بیش از حد مجاز است. لطفاً کمی بعد دوباره تلاش کنید.",
+  "The server is unavailable. Check your connection and try again.": "سرور در دسترس نیست. اتصال اینترنت خود را بررسی و دوباره تلاش کنید.",
+  "We could not complete your request.": "انجام درخواست ممکن نشد.",
+  "Something went wrong. Try again.": "مشکلی پیش آمد. دوباره تلاش کنید.",
+  "Loading your session": "در حال بارگذاری نشست شما",
 };
+
+export function translate(text: string, language: Language): string {
+  return language === "fa" ? persian[text] ?? text : text;
+}
 
 interface LanguageContextValue {
   language: Language;
@@ -77,7 +97,7 @@ export function LanguageProvider({ children }: Readonly<{ children: ReactNode }>
     applyLanguage(next);
   }
 
-  const value = useMemo(() => ({ language, setLanguage, t: (text: string) => language === "fa" ? persian[text] ?? text : text }), [language]);
+  const value = useMemo(() => ({ language, setLanguage, t: (text: string) => translate(text, language) }), [language]);
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
 
