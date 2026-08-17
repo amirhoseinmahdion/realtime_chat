@@ -146,3 +146,9 @@ Use direction-aware preference positioning and translate all remaining supportin
 **Status:** Complete
 
 Localize the username hint and make username/password field adornments and spacing direction-aware.
+
+## Enhancement: Hosted Authentication Connectivity
+
+**Status:** Complete
+
+Configure the Vercel production bundle with the hosted Render HTTP API and Socket.IO endpoints and verify CORS connectivity.

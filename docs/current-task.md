@@ -1,24 +1,24 @@
-# Current Task: Persian Authentication Field UX
+# Current Task: Hosted Authentication Connectivity
 
 **Status:** Complete
 
 ## Goal
 
-Polish username and password fields so their placeholders, adornments, padding, and password visibility control work naturally in Persian RTL mode.
+Restore signup/login connectivity from the Vercel frontend to the hosted Render API.
 
 ## Steps
 
-- [x] Translate the username placeholder with guidance that usernames use English characters.
-- [x] Make the username prefix and password visibility control direction-aware.
-- [x] Make input padding follow the active text direction.
-- [x] Add automated coverage for the username placeholder translation.
-- [x] Run frontend checks, commit, deploy, and verify the hosted login page.
+- [x] Reproduce and inspect the hosted CORS preflight.
+- [x] Verify the Render API allows the exact production frontend origin.
+- [x] Identify the frontend production endpoint configuration failure.
+- [x] Configure production HTTP API and Socket.IO URLs in Vercel.
+- [x] Rebuild, deploy, and verify the signup request path.
 
 ## Completion Criteria
 
-Username and password fields have correct Persian copy and no overlapping adornments in either LTR or RTL mode.
+The production signup page calls the hosted Render API, and browser-style preflight and POST requests return the correct CORS origin.
 
 ## Notes and Blockers
 
-- Commit `444680c` contains the implementation locally; GitHub HTTPS credentials remain unavailable in this terminal.
-- Vercel deployment `dpl_DhvnFFRWQAK7N6wZwtGNPvbtHjbj` is Ready and assigned to the production alias.
+- Vercel deployment `dpl_6AvRMDcSniV4Gd3aaLDSgMiSJYNp` is Ready and assigned to the production alias.
+- Render Free may take approximately 30 seconds to wake after inactivity.

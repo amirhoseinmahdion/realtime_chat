@@ -35,6 +35,26 @@ This file records project phases that have been implemented and verified. Planne
 
 ## Completed Features
 
+## 2026-08-17 — Enhancement: Hosted Authentication Connectivity
+
+**Status:** Complete
+
+### Delivered
+
+- Found that the Vercel project had no `NEXT_PUBLIC_API_URL` or `NEXT_PUBLIC_SOCKET_URL`, causing production to use the localhost fallback.
+- Configured both production variables to the hosted Render HTTPS origin and rebuilt the frontend.
+- Published deployment `dpl_6AvRMDcSniV4Gd3aaLDSgMiSJYNp` to the production alias.
+
+### Verified
+
+- Hosted signup preflight returned HTTP 204 with the exact production `Access-Control-Allow-Origin`.
+- A browser-origin signup POST reached the API and returned an expected HTTP 400 validation response with correct CORS headers.
+- Production signup returned HTTP 200 from the fresh Vercel deployment.
+
+### Notes
+
+- Render Free sleeps when inactive, so the first request may take roughly 30 seconds while the service wakes.
+
 ## 2026-08-17 — Enhancement: Persian Authentication Field UX
 
 **Status:** Complete
